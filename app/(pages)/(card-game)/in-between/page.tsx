@@ -34,19 +34,13 @@ export default function InBetweenIntroPage() {
         "There are 13 values ('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K') and 4 type of suits ('♦', '♣', '♥', '♠').",
         "Each card is formed by a value-suit pair, eg: '5♦', '9♠', etc.",
         "The more the difference between C1 and C2, the higher the chance of winning. Difference can varied from 0 to 12.",
-        <br />,
         "Given that the card deck are not shuffled, we can keep track of the remaining card count of each values and determine the probability.",
         "cardCounter = {values: count} for each values is initialized to count of 4 and decrement by 1 when a card with the particular value is revealed.",
-        <br />,
         "Let P(-2), P(-1) and P(1) to be the probability of losing x2, losing x1 and winning x1 respectively.",
         "Let x to be the remaining card count in card deck.",
-        <br />,
         "P(-2) = cardCounter[C1.digit] / x",
         "P(-1) = ( cardCounter[1:C1.digit] + cardCounter[C2.digit+1:13] ) / x",
         "P(1) = cardCounter[C1.digit+1:C2.digit] / x",
-        <br />,
-
-        <br />,
     ] as const;
 
     return (
