@@ -49,47 +49,9 @@ async function seedUser() {
 
 };
 
-async function seedType() {
-
-    const parsedForm = createTypeSchema.array().safeParse(types);
-
-    if(!parsedForm.success) {
-        return { error: parsedForm.error.message.split('"message": "').pop()?.split('",')[0] }
-    }
-
-    try {
-        if (parsedEnv.DB_TYPE === 'PRISMA') {
-            const result = await Promise.all(parsedForm.data.map( async (d) => {
-                await prisma.type.create({
-                    data: d,
-                })
-            }));
-        }
-        else {
-            let pool = await sql.connect(sqlConfig);
-            const result = await Promise.all(parsedForm.data.map( async (d) => {
-                pool.request()
-                .input('type_uid', sql.VarChar, d.type_uid)
-                .input('type', sql.VarChar, d.type)
-                .input('type_created_dt', sql.DateTime, d.type_created_dt)
-                .input('type_updated_dt', sql.DateTime, d.type_updated_dt)
-                .query`INSERT INTO [template].[type] 
-                        (type_uid, type, type_created_dt, type_updated_dt)
-                        VALUES (@type_uid, @type, @type_created_dt, @type_updated_dt);
-                `;
-            }));
-        }
-        return { success: `Successfully seed type` }
-    } catch (err) {
-        return { error: getErrorMessage(err)}
-    }
-
-};
-
 
 async function main() {
     console.log(await seedUser());
-    console.log(await seedType());
 };
 
 // Run main
