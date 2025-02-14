@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from 'next'
 import Link from "next/link";
+import { twMerge } from "tailwind-merge";
 
 export const metadata: Metadata = {
     title: {
@@ -68,7 +69,7 @@ export default function InBetweenIntroPage() {
                 {probabilities.map((probability, index) => {
                     return (
                         <React.Fragment key={index}>
-                            <li className="text">{probability}</li>
+                            <li className={twMerge("text", (index === 3 || index === 5 || index === 7 || index === 10) && "mb-4")}>{probability}</li>
                         </React.Fragment>
                     );
                 })}
