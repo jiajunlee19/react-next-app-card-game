@@ -1,0 +1,35 @@
+// generator zod {
+//   provider       = "zod-prisma-types"
+// }
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["multiSchema", "fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DB_PRISMA_URL") // uses connection pooling
+  directUrl = env("DB_URL_NON_POOLING") // uses a direct connection
+  schemas  = ["card-game"]
+}
+
+model User {
+  user_uid String @db.Uuid @id @unique
+  username String @db.VarChar(100)
+  password String @db.VarChar(100)
+  role Role @default(user)
+  user_created_dt DateTime @db.Timestamp()
+  user_updated_dt DateTime @db.Timestamp()
+
+  @@map(name: "user")
+  @@schema("card-game")
+}
+
+enum Role {
+  user
+  admin
+  boss
+
+  @@schema("card-game")
+}
