@@ -39,7 +39,7 @@ export default async function RootLayout({
 
             <div className="w-full bg-white dark:bg-zinc-900">
               <div className="flex flex-col h-screen lg:ml-64 xl:ml-72">
-                <header className="contents z-20 lg:flex lg:fixed lg:inset-0 lg:w-64 xl:w-72">
+                <header className="fixed top-0 z-20 lg:flex lg:fixed lg:inset-0 lg:w-64 xl:w-72">
                   <Header/>
                 </header>
 
