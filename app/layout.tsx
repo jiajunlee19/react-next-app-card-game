@@ -43,7 +43,7 @@ export default async function RootLayout({
                   <Header/>
                 </header>
 
-                <main className="z-0 block h-[calc(100vh-56px-56px)] w-full my-[calc(56px+4px)] px-4 overflow-y-scroll sm:px-6 lg:px-8">
+                <main className="z-0 block h-[calc(100dvh-56px-56px)] w-full my-[calc(56px+4px)] px-4 overflow-y-scroll sm:px-6 lg:px-8">
                   {children}
                 </main>
 
