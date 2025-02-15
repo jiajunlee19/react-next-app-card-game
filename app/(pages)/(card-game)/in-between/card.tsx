@@ -3,7 +3,7 @@ import Image from "next/image";
 
 type CardComponentType = {
     boardCard: TBoardCard,
-    handleCardClick: () => void,
+    handleCardClick?: () => void,
 };
 
 export function CardComponent({ boardCard, handleCardClick }: CardComponentType) {

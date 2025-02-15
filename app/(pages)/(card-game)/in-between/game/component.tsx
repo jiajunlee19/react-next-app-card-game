@@ -2,7 +2,7 @@
 
 import { type TCard, type TBoardCard, type TRemainingCardCounter, getInitialCardCounter } from "@/app/_libs/card";
 import { shuffleCardDeck } from '@/app/_libs/card';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CardComponent, CardGridComponent, StackedCardDeckComponent } from "@/app/(pages)/(card-game)/in-between/card";
 import Link from "next/link";
 
@@ -15,26 +15,29 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
     // Game States
     const [shuffledCardDeck, setShuffledCardDeck] = useState<TCard[] | []>([]);
     const [betAmount, setBetAmount] = useState(1);
-    const [bankAmount, setBankAmount] = useState(1000000);
+    const [bankAmount, setBankAmount] = useState(0);
     const [boardCards, setBoardCards] = useState<TBoardCard[]>([
         { cardNumber: "c1", face: "down", card: null }, 
         { cardNumber: "c3", face: "down", card: null }, 
         { cardNumber: "c2", face: "down", card: null }, 
     ]);
-    const [canPlaceBet, setCanPlaceBet] = useState(true);
+    const [isGameInit, setIsGameInit] = useState(true);
+    const [canPlaceBet, setCanPlaceBet] = useState(false);
     const [result, setResult] = useState<-2 | -1 | 1 | 0>(0);
     const [isShowProbability, setIsShowProbability] = useState(false);
     const [remainingCardCounter, setRemainingCardCounter] = useState<TRemainingCardCounter>(getInitialCardCounter());
 
 
-    // Functions
-    function placeBet(amount: number) {
-        if (amount <= 0 || amount > bankAmount || !Number.isInteger(amount)) {
-            return;
+    // Effects
+    const betRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (canPlaceBet && betRef.current) {
+            betRef.current.focus();
         }
-        setBetAmount(amount);
-    };
+    }, [canPlaceBet])
 
+
+    // Functions
     function distributeCard(cardNumber: TBoardCard["cardNumber"]) {
         const [card] = shuffledCardDeck.splice(0, 1);
         setBoardCards(prevBoardCards => prevBoardCards.map((boardCard) => {
@@ -70,13 +73,42 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
 
     };
 
+    function calculateProbability() {
+        const [C1, C3, C2] = boardCards;
+
+        // If either one card 1 or card 2 is not available, unable to calculate.
+        if (!C1.card || !C2.card) {
+            return null;
+        }
+
+        // If C3 is faced up, user already knew the result.
+        if (C3.card && C3.face === "up") {
+            return null;
+        }
+
+
+
+        return 0;
+    };
+
+    function placeBet(amount: number) {
+        if (amount <= 0 || amount > bankAmount || !Number.isInteger(amount)) {
+            setBetAmount(1);
+            return;
+        }
+        setBetAmount(amount);
+    };
+
     function decideWinLose() {
         const [C1, C3, C2] = boardCards;
-        // If all three cards are not drawn and faced up, game is still in-progress.
-        if (!C1.card || C1.face === 'down' || !C3.card || C3.face === 'down' || !C2.card || C2.face === 'down') {
+        // Do nothing if the game is still in-progress and the result is not ready to be decided.
+        if (!C1.card || C1.face === 'down' || !C3.card || !C2.card || C2.face === 'down') {
             setResult(0);
             return;
         }
+
+        // Reveal Card 3
+        changeCardFace("c3", "reveal");
 
         // If C3 is exactly equal to C1 or C2, player loses x2 of bet amount to the bank
         if (C3.card.digit === C1.card.digit || C3.card.digit === C2.card.digit) {
@@ -126,9 +158,10 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
         resetBoardCards();
         setShuffledCardDeck(shuffleCardDeck(cardDeck));
         setRemainingCardCounter(getInitialCardCounter());
-        setCanPlaceBet(true);
-        setBankAmount(betAmount);
-        setBetAmount(betAmount);
+        setIsGameInit(true);
+        setCanPlaceBet(false);
+        setBankAmount(0);
+        setBetAmount(1);
     };
 
     function isValidGame() {
@@ -170,7 +203,7 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
     function canDecideWinLose() {
         const [C1, C3, C2] = boardCards;
         // Do not decide win/lose if bank is zero or result is already decided or all three cards are not drawn/faced up
-        if (result !== 0 || !C1.card || C1.face === 'down' || !C3.card || C3.face === 'down' || !C2.card || C2.face === 'down') {
+        if (result !== 0 || !C1.card || C1.face === 'down' || !C3.card || !C2.card || C2.face === 'down') {
             return false;
         }
 
@@ -186,33 +219,33 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
 
 
     // Handlers
-
-    const handleDistributeC1C2 = () => {
-        if (!canDistributeC1C2()) {
+    const handleInitBankChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!isGameInit) {
             return;
         }
-        distributeCard("c1");
-        distributeCard("c2");
-    };
 
-    const handleDistributeC3 = () => {
-        if (!canDistributeC3()) {
+        const amount = parseInt(e.target.value, 10)
+        if (amount <= 0 || !Number.isInteger(amount)) {
+            setBankAmount(1);
+            setIsGameInit(false);
             return;
         }
-        distributeCard("c3");
+        setBankAmount(amount);
+        setIsGameInit(false);
     };
 
     const handleDistributeCard = () => {
         if (canDistributeC1C2() && !canDistributeC3()) {
+            setCanPlaceBet(false);
             distributeCard("c1");
             distributeCard("c2");
             return;
         }
         if (!canDistributeC1C2() && canDistributeC3()) {
-            setCanPlaceBet(false);
             changeCardFace("c1", "reveal");
             changeCardFace("c2", "reveal");
             distributeCard("c3");
+            setCanPlaceBet(true);
             return;
         }
     };
@@ -225,10 +258,18 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
         placeBet(betAmount);
     };
 
+    const handleBetAllIn = () => {
+        if (!canPlaceBet) {
+            return;
+        }
+        placeBet(bankAmount);
+    };
+
     const handleDecideWinLose = () => {
         if (!canDecideWinLose()) {
             return;
         }
+        setCanPlaceBet(false);
         decideWinLose();
     };
 
@@ -237,10 +278,13 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
             return;
         }
         resetBoardCards();
-        setCanPlaceBet(true);
     };
 
     const handleStartNewGame = () => {
+        const confirmStartNewGame = window.confirm("Are you sure you want to start a new game?");
+        if (!confirmStartNewGame) {
+            return;
+        }
         resetGame();
     };
 
@@ -253,13 +297,19 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
     return (
         <>
             <ul className="list-inside list-disc">
-                <li className="text">{"Set Minimum Bet -> Start a New Game -> Click Card Decks -> Reveal Card 1/2 -> Place Bet -> Reveal Card 3 -> Decide -> Go Next -> Repeat"}</li>
+                <li className="text">{"Init Bet Amount -> Start a New Game -> Click Card Decks -> Reveal Card 1/2 -> Place Bet -> Reveal Card 3 -> Decide -> Go Next -> Repeat"}</li>
                 <li className="text">You win if the value of Card 3 is in-between Card 1 and 2, otherwise you lose. If the value of Card 3 is equal to either of Card 1 or 2, you lose double the amount !</li>
                 <li className="text">For detailed introduction, navigate to <Link href="/in-between">here</Link>.</li>
             </ul>
 
             <div className="flex gap-32 mt-12 mb-8 items-center justify-start max-md:gap-16 max-sm:gap-10">
                 <button className="btn-primary" onClick={handleStartNewGame}>Start a New Game</button>
+                {isGameInit && 
+                    <div className="flex gap-4">
+                        <label className="whitespace-nowrap" htmlFor="initBankAmount">initBankAmount: </label>
+                        <input id="initBankAmount" type="number" min="1" max="1000000" placeholder="1" defaultValue="1" onBlur={handleInitBankChange} disabled={!isGameInit} autoFocus />
+                    </div>
+                }
                 <p className="text whitespace-nowrap">Bank Amount = {bankAmount}</p>
                 <div className="flex gap-4">
                     <label className="whitespace-nowrap" htmlFor="showProbability">showProbability?</label>
@@ -268,10 +318,13 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
             </div>
 
             <div className="flex gap-32 mt-12 mb-8 items-center justify-start max-md:gap-16 max-sm:gap-10">
-                <div className="flex gap-8 max-md:gap-4">
-                    <label className="whitespace-nowrap" htmlFor="betAmount">Enter your bet: </label>
-                    <input className="min-w-10 max-w-40" id="betAmount" type="number" min="1" step="1" max={bankAmount} placeholder="1" onChange={handleBetChange} disabled={!canPlaceBet} />
-                </div>
+                {canPlaceBet && 
+                    <div className="flex gap-8 max-md:gap-4">
+                        <label className="whitespace-nowrap" htmlFor="betAmount">Enter your bet: </label>
+                        <input className="min-w-10 max-w-40" id="betAmount" type="number" min="1" step="1" max={bankAmount} placeholder="1" value={betAmount} onBlur={handleBetChange} onChange={handleBetChange} disabled={!canPlaceBet} ref={betRef} />
+                        <button className="btn-secondary" onClick={handleBetAllIn}>All In</button>
+                    </div>
+                }
                 <button className="btn-primary" onClick={handleDecideWinLose} disabled={!canDecideWinLose()}>Decide</button>
                 <button className="btn-primary" onClick={handleGoNext} disabled={!canGoNext()}>Go Next</button>
             </div>
@@ -287,7 +340,9 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
             <CardGridComponent>
                 {boardCards.map((boardCard, index) => {
                         return (
-                            <CardComponent key={index} boardCard={boardCard} handleCardClick={() => changeCardFace(boardCard.cardNumber, "toggle")} />
+                            <CardComponent key={index} boardCard={boardCard} 
+                                handleCardClick={boardCard.cardNumber === "c3" ? undefined : (() => changeCardFace(boardCard.cardNumber, "toggle"))} 
+                            />
                         );
                     })}
 
@@ -299,8 +354,9 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
             </CardGridComponent>
 
             {isShowProbability && 
-                <div className="flex justify-center align-middle mt-8">
+                <div className="flex flex-col justify-center align-middle items-center mt-8">
                     <p className="text">{JSON.stringify(remainingCardCounter)}</p>
+                    <p className="text">{calculateProbability()}</p>
                 </div>
             }
         </>
