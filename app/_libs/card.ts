@@ -97,9 +97,7 @@ export function calculateCardLeft(cardMin: typeof digits[number], cardMax: typeo
     let cardLeft = 0;
 
     if (mode === "hit") {
-        for (let i=cardMin; i<=cardMax; i++) {
-            cardLeft += remainingCardCounter[i];
-        };
+        cardLeft += remainingCardCounter[cardMin] + remainingCardCounter[cardMax];
     } else if (mode === "inBetween" && cardMin+1 <= 13) {
         for (let i=cardMin+1; i<cardMax; i++) {
             cardLeft += remainingCardCounter[i as typeof digits[number]];
