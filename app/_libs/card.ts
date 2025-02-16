@@ -85,3 +85,35 @@ export function getInitialCardCounter() {
     return remainingCardCounter;
 
 };
+
+
+export function calculateCardLeft(cardMin: typeof digits[number], cardMax: typeof digits[number], remainingCardCounter: TRemainingCardCounter, mode: "hit" | "notInBetween" | "inBetween") {
+    
+    // Swap min-max if reversed
+    if (cardMin > cardMax) {
+        [cardMin, cardMax] = [cardMax, cardMin]
+    }
+
+    let cardLeft = 0;
+
+    if (mode === "hit") {
+        for (let i=cardMin; i<=cardMax; i++) {
+            cardLeft += remainingCardCounter[i];
+        };
+    } else if (mode === "inBetween" && cardMin+1 <= 13) {
+        for (let i=cardMin+1; i<cardMax; i++) {
+            cardLeft += remainingCardCounter[i as typeof digits[number]];
+        };
+    } else if (mode === "notInBetween") {
+        for (let i=1; i<cardMin; i++) {
+            cardLeft += remainingCardCounter[i as typeof digits[number]];
+        };
+        if (cardMax+1 <= 13) {
+            for (let i=cardMax+1; i<=13; i++) {
+                cardLeft += remainingCardCounter[i as typeof digits[number]];
+            }
+        };
+    }
+
+    return cardLeft;
+}
