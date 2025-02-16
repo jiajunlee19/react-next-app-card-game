@@ -85,7 +85,7 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
         const [C1, C3, C2] = boardCards;
 
         // If either one card 1 or card 2 is not available, unable to calculate.
-        if (!C1.card || !C2.card) {
+        if (!C1.card || C1.face === "down" || !C2.card || C2.face === "down") {
             return {};
         }
 
@@ -101,9 +101,9 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
             [c1, c2] = [c2, c1];
         }
 
-        const pLose2 = calculateCardLeft(c1, c2, remainingCardCounter, "hit") / shuffledCardDeck.length;
-        const pLose1 = calculateCardLeft(c1, c2, remainingCardCounter, "notInBetween") / shuffledCardDeck.length;
-        const pWin1 = calculateCardLeft(c1, c2, remainingCardCounter, "inBetween") / shuffledCardDeck.length;
+        const pLose2 = calculateCardLeft(c1, c2, remainingCardCounter, "hit") / (shuffledCardDeck.length+1);
+        const pLose1 = calculateCardLeft(c1, c2, remainingCardCounter, "notInBetween") / (shuffledCardDeck.length+1);
+        const pWin1 = calculateCardLeft(c1, c2, remainingCardCounter, "inBetween") / (shuffledCardDeck.length+1);
 
         const probabilities = {
             'Probability of Losing Double': pLose2,
