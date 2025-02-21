@@ -12,6 +12,7 @@
 <br>
 
 ## In-Between Card Game
-Navigate to [https://react-next-app-card-game.vercel.app/in-between](https://react-next-app-card-game.vercel.app/in-between) for game introduction. To play the game, navigate to [https://react-next-app-card-game.vercel.app/in-between/game](https://react-next-app-card-game.vercel.app/in-between/game). 
+- Navigate to [https://react-next-app-card-game.vercel.app/in-between](https://react-next-app-card-game.vercel.app/in-between) for game introduction. 
+- To play the game, navigate to [https://react-next-app-card-game.vercel.app/in-between/game](https://react-next-app-card-game.vercel.app/in-between/game). 
 
 <br>
