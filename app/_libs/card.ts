@@ -5,6 +5,11 @@ const digits = [1, 2, 3 ,4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
 const counts = [0, 1, 2, 3, 4] as const;
 
 
+// Define type for digit: value pair
+export type TDigitValuePairs = {
+    [key in typeof digits[number]]: typeof values[number]
+};
+
 // Define type for each card
 export type TCard = {
     id: `${typeof values[number]}${typeof suits[number]}`,
@@ -26,6 +31,17 @@ export type TRemainingCardCounter = {
     [key in typeof digits[number]]: typeof counts[number]
 };
 
+
+// getDigitValuePairs() returns a dict of digit: value pairs
+// eg: {1: 'A', 2:'2', 3:'3' ... ...,12:'Q', 13:'K'}
+export function getDigitValuePairs() {
+    let digitValuePairs: TDigitValuePairs = {} as TDigitValuePairs;
+    for (let i=0; i<13; i++) {
+        digitValuePairs[digits[i]] = values[i];
+    };
+
+    return digitValuePairs
+};
 
 // getCardDeck() returns a list of 52 cards, each with unique value+suit combination
 // [
