@@ -54,6 +54,11 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
 
     // Handlers
     const handleReset = () => {
+        const confirmReset = window.confirm("Are you sure you want to reset?");
+        if (!confirmReset) {
+            return;
+        }
+
         setCardCounter(initialCardCounter);
         setCard1(null);
         setCard2(null);
@@ -104,10 +109,11 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
 
 
     return (
-        <div className="flex flex-col gap-4 my-4">
+        <div className="flex flex-col gap-8 my-4">
+            <p className="text">Keep track of what cards are drawn by clicking the "+" and "-" buttons. Select your Card1/Card2 and the probability will be automatically calculated.</p>
             <button className="btn-primary w-fit" onClick={() => handleReset()}>Reset</button>
 
-            <ul className="">
+            <ul className="flex flex-col gap-4">
                 {Object.entries(cardCounter).map(([k, v]) => {
                     const digit = Number(k) as keyof typeof digitValuePairs ;
                     const value = digitValuePairs[digit];
@@ -115,7 +121,7 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
 
                     return (
                         <li key={digit} className="text flex items-center gap-8 justify-start">
-                            Card {value}: {count}
+                            <span className="flex gap-4">Card {value}: <span className="font-bold">{count}</span></span>
                             <button className="btn-primary" onClick={() => handleCounterUpdate(digit, "increment")}>+</button>
                             <button className="btn-primary" onClick={() => handleCounterUpdate(digit, "decrement")}>-</button>
                         </li>
