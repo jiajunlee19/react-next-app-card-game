@@ -1,6 +1,6 @@
 "use client"
 
-import { type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
+import { calculateCardLeft, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
 import { useState } from "react";
 
 type TInBetweenCalculatorComponent = {
@@ -8,12 +8,48 @@ type TInBetweenCalculatorComponent = {
     initialCardCounter: TRemainingCardCounter,
 };
 
+ 
 export default function InBetweenCalculatorComponent({ digitValuePairs, initialCardCounter }: TInBetweenCalculatorComponent) {
 
     // States
     const [cardCounter, setCardCounter] = useState(initialCardCounter);
     const [card1, setCard1] = useState<keyof TDigitValuePairs | null>(null);
     const [card2, setCard2] = useState<keyof TDigitValuePairs | null>(null);
+
+
+    // Functions
+    function calculateProbability() {
+
+        // If either one card 1 or card 2 is not available, unable to calculate.
+        if (!card1 || !card2) {
+            return {};
+        }
+
+        let [c1, c2] = [card1, card2];
+
+        // Swap if needed to ensure c1 <= c2
+        if (c1 > c2) {
+            [c1, c2] = [c2, c1];
+        }
+
+        // Get totalCount
+        let totalCount = 0;
+        Object.values(cardCounter).forEach((count) => {
+            totalCount += count;
+        });
+
+        const pLose2 = calculateCardLeft(c1, c2, cardCounter, "hit") / totalCount;
+        const pLose1 = calculateCardLeft(c1, c2, cardCounter, "notInBetween") / totalCount;
+        const pWin1 = calculateCardLeft(c1, c2, cardCounter, "inBetween") / totalCount;
+
+        const probabilities = {
+            'Probability of Losing Double': pLose2,
+            'Probability of Losing': pLose1,
+            'Probability of Winning': pWin1,
+        };
+
+        return probabilities;
+    };
 
 
     // Handlers
@@ -48,10 +84,6 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
             return {...prevCardCounter, [digit]: count};
         });
 
-
-
-
-
     };
 
     const handleCardSelect = (cardNumber: "c1" | "c2") => (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -72,17 +104,17 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
 
 
     return (
-        <>
-            <button className="btn-primary" onClick={() => handleReset()}>Reset</button>
+        <div className="flex flex-col gap-4 my-4">
+            <button className="btn-primary w-fit" onClick={() => handleReset()}>Reset</button>
 
-            <ul>
+            <ul className="">
                 {Object.entries(cardCounter).map(([k, v]) => {
                     const digit = Number(k) as keyof typeof digitValuePairs ;
                     const value = digitValuePairs[digit];
                     const count = v;
 
                     return (
-                        <li key={digit} className="text">
+                        <li key={digit} className="text flex items-center gap-8 justify-start">
                             Card {value}: {count}
                             <button className="btn-primary" onClick={() => handleCounterUpdate(digit, "increment")}>+</button>
                             <button className="btn-primary" onClick={() => handleCounterUpdate(digit, "decrement")}>-</button>
@@ -93,10 +125,10 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
 
             {[{cardNumber: "c1", card: card1, description: "Select Card 1"}, {cardNumber: "c2", card: card2, description: "Select Card 2"}].map((item) => {
                 return (
-                    <select key={item.cardNumber} value={item.card || ""} onChange={handleCardSelect(item.cardNumber as "c1" | "c2")}>
+                    <select className="w-fit" key={item.cardNumber} value={item.card || ""} onChange={handleCardSelect(item.cardNumber as "c1" | "c2")}>
                         <option value="">{item.description}</option>
                         {Object.entries(cardCounter).map(([k, v]) => {
-                            const digit = Number(k) as keyof typeof digitValuePairs ;
+                            const digit = Number(k) as keyof typeof digitValuePairs;
                             const value = digitValuePairs[digit];
                             const count = v;
 
@@ -108,7 +140,18 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
                         })}
                     </select>
                 );
-            })};
-        </>
+            })}
+
+            <div className="flex flex-col justify-start align-top items-start">
+                {Object.entries(calculateProbability()).map(([description, probability], index) => {
+                    if (typeof probability !== "number") {
+                        return null;
+                    }
+                    return (
+                        <p key={index} className="text">{`${description}: ${(probability*100).toFixed(2)}%`}</p>
+                    );
+                })}
+            </div>        
+        </div>
     );
 };
