@@ -122,8 +122,8 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
                     return (
                         <li key={digit} className="text flex items-center gap-8 justify-start">
                             <span className="flex gap-4">Card {value}: <span className="font-bold">{count}</span></span>
-                            <button className="btn-primary" onClick={() => handleCounterUpdate(digit, "increment")}>+</button>
-                            <button className="btn-primary" onClick={() => handleCounterUpdate(digit, "decrement")}>-</button>
+                            <button className="btn-primary w-fit" onClick={() => handleCounterUpdate(digit, "increment")}>+</button>
+                            <button className="btn-primary w-fit" onClick={() => handleCounterUpdate(digit, "decrement")}>-</button>
                         </li>
                     )
                 })}

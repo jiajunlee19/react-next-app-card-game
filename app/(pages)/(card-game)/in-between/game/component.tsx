@@ -334,7 +334,7 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
                 <button className="btn-primary" onClick={handleStartNewGame}>Start a New Game</button>
                 <div className="flex gap-4">
                     <label className="whitespace-nowrap" htmlFor="initBankAmount">initBankAmount: </label>
-                    <input id="initBankAmount" type="number" min="1" max="1000000" placeholder="1" defaultValue="1" onBlur={handleInitBankChange} disabled={!canInitBank()} ref={initBankRef} />
+                    <input className="w-fit" id="initBankAmount" type="number" min="1" max="1000000" placeholder="1" defaultValue="1" onBlur={handleInitBankChange} disabled={!canInitBank()} ref={initBankRef} />
                 </div>
                 <p className="text whitespace-nowrap">Bank Amount = {bankAmount}</p>
                 <div className="flex gap-4">
