@@ -31,10 +31,10 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
             // Sets min/max
             let [min, max] = [0, 4];
             if (digit === card1 && digit === card2) {
-                [min, max] = [0, 3];
+                [min, max] = [2, 2];
             }
             else if (digit === card1 || digit === card2) {
-                [min, max] = [0, 2];
+                [min, max] = [1, 3];
             }
 
             // Handle based on mode (increment/decrement)
@@ -60,7 +60,6 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
         if (cardCounter[digit] > 0) {
             if (cardNumber === "c1") setCard1(digit);
             else if (cardNumber === "c2") setCard2(digit);
-            handleCounterUpdate(digit, "decrement");
         }
 
         else {
@@ -95,17 +94,21 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
             {[{cardNumber: "c1", card: card1, description: "Select Card 1"}, {cardNumber: "c2", card: card2, description: "Select Card 2"}].map((item) => {
                 return (
                     <select key={item.cardNumber} value={item.card || ""} onChange={handleCardSelect(item.cardNumber as "c1" | "c2")}>
-                        <option value="" disabled>{item.description}</option>
+                        <option value="">{item.description}</option>
                         {Object.entries(cardCounter).map(([k, v]) => {
                             const digit = Number(k) as keyof typeof digitValuePairs ;
                             const value = digitValuePairs[digit];
                             const count = v;
-        
-                            return <option key={digit} value={digit} disabled={count <= 0}>{value} {count<=0 && " (Unavailable)"}</option>
+
+                            let isDisabled = count <= 0;
+                            if (card1 && card2) isDisabled = count-2 <= 0
+                            else if (card1 || card2) isDisabled = count-1 <=0
+                
+                            return <option key={digit} value={digit} disabled={isDisabled}>{value} {count<=0 && " (Unavailable)"}</option>
                         })}
                     </select>
                 );
             })};
         </>
-    )
+    );
 };
