@@ -1,6 +1,6 @@
 "use client"
 
-import { type TCard, type TBoardCard, type TRemainingCardCounter, getInitialCardCounter, calculateCardLeft } from "@/app/_libs/card";
+import { type TCard, type TBoardCard, type TRemainingCardCounter, getInitialCardCounter, calculateCardLeft, getDigitValuePairs } from "@/app/_libs/card";
 import { shuffleCardDeck } from '@/app/_libs/card';
 import { useEffect, useRef, useState } from 'react';
 import { CardComponent, CardGridComponent, StackedCardDeckComponent } from "@/app/(pages)/(card-game)/in-between/card";
@@ -11,6 +11,8 @@ type TInBetweenComponent = {
 };
 
 export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent) {
+
+    const digitValuePairs = getDigitValuePairs();
 
     // Game States
     const [shuffledCardDeck, setShuffledCardDeck] = useState<TCard[] | []>(shuffleCardDeck(cardDeck));
@@ -65,9 +67,9 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
             if (boardCard.cardNumber === cardNumber) {
                 if (mode === "reveal") {
                     setRemainingCardCounter(prevRemainingCardCounter => {
-                        const cardCounter = {...prevRemainingCardCounter};
-                        if (boardCard.card) cardCounter[boardCard.card.digit] -= 1
-                        return cardCounter;
+                        const remainingCardCounter = {...prevRemainingCardCounter};
+                        if (boardCard.card) remainingCardCounter[boardCard.card.digit] -= 1
+                        return remainingCardCounter;
                     });
                     return { ...boardCard, face: "up"};
                 }
@@ -380,16 +382,31 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
             </CardGridComponent>
 
             {isShowProbability && 
-                <div className="flex flex-col justify-center align-middle items-center mt-8">
-                    {Object.entries(calculateProbability()).map(([description, probability], index) => {
-                        if (typeof probability !== "number") {
-                            return null;
-                        }
-                        return (
-                            <p key={index} className="text">{`${description}: ${(probability*100).toFixed(2)}%`}</p>
-                        );
-                    })}
-                    <p className="text">{JSON.stringify(remainingCardCounter)}</p>
+                <div className="flex flex-col gap-8 justify-center align-middle items-center mt-8">
+                    <div>
+                        {Object.entries(calculateProbability()).map(([description, probability], index) => {
+                            if (typeof probability !== "number") {
+                                return null;
+                            }
+                            return (
+                                <p key={index} className="text">{`${description}: ${(probability*100).toFixed(2)}%`}</p>
+                            );
+                        })}
+                    </div>
+
+                    <ul className="flex flex-col gap-4 mb-4">
+                        {Object.entries(remainingCardCounter).map(([k, v]) => {
+                            const digit = Number(k) as keyof typeof digitValuePairs ;
+                            const value = digitValuePairs[digit];
+                            const count = v;
+
+                            return (
+                                <li key={digit} className="text flex items-center gap-8 justify-start">
+                                    <span className="flex gap-4">Card {value}: <span className="font-bold">{count}</span></span>
+                                </li>
+                            )
+                        })}
+                    </ul>
                 </div>
             }
         </>
