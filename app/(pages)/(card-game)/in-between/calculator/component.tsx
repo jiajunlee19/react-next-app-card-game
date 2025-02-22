@@ -110,7 +110,7 @@ export default function InBetweenCalculatorComponent({ digitValuePairs, initialC
 
     return (
         <div className="flex flex-col gap-8 my-4">
-            <p className="text">Keep track of what cards are drawn by clicking the "+" and "-" buttons. Select your Card1/Card2 and the probability will be automatically calculated.</p>
+            <p className="text">Keep track of what cards are drawn by clicking the &quot;+&quot; and &quot;-&quot; buttons. Select your Card1/Card2 and the probability will be automatically calculated.</p>
             <button className="btn-primary w-fit" onClick={() => handleReset()}>Reset</button>
 
             <ul className="flex flex-col gap-4">
