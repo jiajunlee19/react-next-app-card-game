@@ -61,11 +61,10 @@ export function StackedCardDeckComponent({ shuffledCardDeck, handleCardClick }: 
                         src="/card-image/Back.jpg" 
                         alt="card-back" 
                         width="120" height="120" 
-                        className=""
+                        className={index === 0 ? "ml-0" : "max-sm:-ml-[98%] sm:-ml-[110px]"}
                         style={{
                             width: '100%',
                             height: 'auto',
-                            marginLeft: index === 0 ? '0px' : '-110px'
                         }}
                     />
                 );
