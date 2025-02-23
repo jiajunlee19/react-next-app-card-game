@@ -35,6 +35,7 @@ export default function Header() {
 
     const actionNavLinks = [
         { name: "In-Between Card Game", href: "/in-between", icon: "" },
+        { name: "Ngao Card Game", href: "/ngao", icon: "" },
     ];
 
     const actionNavLinksProtected = [
