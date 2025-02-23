@@ -34,9 +34,7 @@ export default function Header() {
     ];
 
     const actionNavLinks = [
-        { name: "In-Between Home Page", href: "/in-between", icon: "" },
-        { name: "In-Between Game Page", href: "/in-between/game", icon: "" },
-        { name: "In-Between Calculator Page", href: "/in-between/calculator", icon: "" },
+        { name: "In-Between Card Game", href: "/in-between", icon: "" },
     ];
 
     const actionNavLinksProtected = [

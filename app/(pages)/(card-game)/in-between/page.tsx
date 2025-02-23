@@ -70,8 +70,8 @@ export default function InBetweenIntroPage() {
             </ol>
 
             <h2 id="play">Play the Game</h2>
-            <p>To play the game, navigate <Link href="/in-between/game">here</Link>.</p>
-            <p>To record the revealed cards and calculate the win/lose probability, navigate <Link href="/in-between/calculator">here</Link>.</p>
+            <p>To play the game, navigate to the <Link href="/in-between/game">In-Between Game</Link>.</p>
+            <p>To record the revealed cards and calculate the win/lose probability, navigate to the <Link href="/in-between/calculator">In-Between Calculator</Link>.</p>
             <br />
             <br />
         </>
