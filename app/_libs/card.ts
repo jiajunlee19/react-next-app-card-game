@@ -21,7 +21,7 @@ export type TCard = {
 
 // Define type for each card in the board
 export type TBoardCard = {
-    cardNumber: "c1" | "c2" | "c3",
+    cardNumber: "c1" | "c2" | "c3" | "c4" | "c5",
     face: "up" | "down",
     card: TCard | null,
 };
