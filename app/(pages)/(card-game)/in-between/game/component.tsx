@@ -3,7 +3,7 @@
 import { type TCard, type TBoardCard, type TRemainingCardCounter, getInitialCardCounter, calculateCardLeft, getDigitValuePairs } from "@/app/_libs/card";
 import { shuffleCardDeck } from '@/app/_libs/card';
 import { useEffect, useRef, useState } from 'react';
-import { CardComponent, CardGridComponent, StackedCardDeckComponent } from "@/app/(pages)/(card-game)/in-between/card";
+import { CardComponent, StackedCardDeckComponent } from "@/app/(pages)/(card-game)/in-between/card";
 import Link from "next/link";
 
 type TInBetweenComponent = {
@@ -365,7 +365,7 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
                 {displayResult(result, betAmount) ? <p className="text">{displayResult(result, betAmount)}</p> : <></>}
             </div>
 
-            <CardGridComponent>
+            <div className="grid grid-cols-3 gap-4 place-items-center">
                 {boardCards.map((boardCard, index) => {
                         return (
                             <CardComponent key={index} boardCard={boardCard} 
@@ -379,7 +379,7 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
                             <p key={index} className="text">{description}</p>
                         );
                     })}
-            </CardGridComponent>
+            </div>
 
             {isShowProbability && 
                 <div className="flex flex-col gap-8 justify-center align-middle items-center mt-8">

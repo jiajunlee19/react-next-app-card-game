@@ -1,3 +1,4 @@
+import NgaoGameComponent from '@/app/(pages)/(card-game)/ngao/game/component';
 import { getCardDeck } from '@/app/_libs/card';
 import type { Metadata } from 'next'
 
@@ -14,6 +15,7 @@ export default function NgaoGamePage() {
 
     return (
         <>
+            <NgaoGameComponent cardDeck={cardDeck} />
         </>
     )
 };

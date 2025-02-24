@@ -28,23 +28,6 @@ export function CardComponent({ boardCard, handleCardClick }: CardComponentType)
 };
 
 
-type CardGridComponentType = {
-    children: React.ReactNode,
-};
-
-export function CardGridComponent({ children }: CardGridComponentType) {
-
-    return (
-        <>
-            <section className="grid grid-cols-3 gap-4 place-items-center">
-                {children}
-            </section>
-        </>
-    );
-
-};
-
-
 type StackedCardDeckComponentType = {
     shuffledCardDeck: TCard[],
     handleCardClick: () => void, 
