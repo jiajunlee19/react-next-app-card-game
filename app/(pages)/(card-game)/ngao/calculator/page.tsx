@@ -1,4 +1,5 @@
 import NgaoCalculatorComponent from '@/app/(pages)/(card-game)/ngao/calculator/component';
+import { getDigitValuePairs, getInitialCardCounter } from "@/app/_libs/card";
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,9 +11,12 @@ export const metadata: Metadata = {
 
 export default function NgaoCalculatorPage() {
 
+    const digitValuePairs = getDigitValuePairs();
+    const initialCardCounter = getInitialCardCounter();
+    
     return (
         <>
-            <NgaoCalculatorComponent />
+            <NgaoCalculatorComponent digitValuePairs={digitValuePairs} initialCardCounter={initialCardCounter} />
         </>
     )
 };
