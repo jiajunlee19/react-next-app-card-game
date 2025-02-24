@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import NgaoCalculatorComponent from '@/app/(pages)/(card-game)/ngao/calculator/component';
 
 export const metadata: Metadata = {
     title: {
@@ -12,6 +13,7 @@ export default function NgaoCalculatorPage() {
 
     return (
         <>
+            <NgaoCalculatorComponent />
         </>
     )
 };
