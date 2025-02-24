@@ -43,18 +43,28 @@ export default function NgaoGameComponent({ cardDeck }: TNgaoGameComponent) {
 
             <div className="grid grid-cols-5 gap-4 place-items-center">
                 {boardCards.map((boardCard, index) => {
-                        return (
-                            <CardComponent key={index} boardCard={boardCard} 
-                                // handleCardClick={boardCard.cardNumber === "c3" ? undefined : (() => changeCardFace(boardCard.cardNumber, "toggle"))} 
-                            />
-                        );
-                    })}
+                    return (
+                        <CardComponent key={index} boardCard={boardCard} 
+                            // handleCardClick={boardCard.cardNumber === "c3" ? undefined : (() => changeCardFace(boardCard.cardNumber, "toggle"))} 
+                        />
+                    );
+                })}
 
-                    {['Card 1', 'Card 2', 'Card 3', 'Card 4', 'Card 5'].map((description, index) => {
-                        return (
-                            <p key={index} className="text">{description}</p>
-                        );
-                    })}
+                {['Card 1', 'Card 2', 'Card 3', 'Card 4', 'Card 5'].map((description, index) => {
+                    return (
+                        <p key={index} className="text">{description}</p>
+                    );
+                })}
+            </div>
+
+            <div>
+                {boardCards.map((boardCard, index) => {
+                    return (
+                        <CardComponent key={index} boardCard={boardCard} 
+                            // handleCardClick={boardCard.cardNumber === "c3" ? undefined : (() => changeCardFace(boardCard.cardNumber, "toggle"))} 
+                        />
+                    );
+                })}
             </div>
         </div>
     );

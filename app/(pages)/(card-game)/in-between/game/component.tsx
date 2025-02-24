@@ -367,18 +367,18 @@ export default function InBetweenGameComponent({ cardDeck }: TInBetweenComponent
 
             <div className="grid grid-cols-3 gap-4 place-items-center">
                 {boardCards.map((boardCard, index) => {
-                        return (
-                            <CardComponent key={index} boardCard={boardCard} 
-                                // handleCardClick={boardCard.cardNumber === "c3" ? undefined : (() => changeCardFace(boardCard.cardNumber, "toggle"))} 
-                            />
-                        );
-                    })}
+                    return (
+                        <CardComponent key={index} boardCard={boardCard} 
+                            // handleCardClick={boardCard.cardNumber === "c3" ? undefined : (() => changeCardFace(boardCard.cardNumber, "toggle"))} 
+                        />
+                    );
+                })}
 
-                    {['Card 1', 'Card 3', 'Card 2'].map((description, index) => {
-                        return (
-                            <p key={index} className="text">{description}</p>
-                        );
-                    })}
+                {['Card 1', 'Card 3', 'Card 2'].map((description, index) => {
+                    return (
+                        <p key={index} className="text">{description}</p>
+                    );
+                })}
             </div>
 
             {isShowProbability && 
