@@ -1,7 +1,7 @@
 "use client"
 
-import { type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
-import { useState } from "react";
+import { suits, values, type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
+import { useEffect, useState } from "react";
 
 type TNgaoCalculatorComponent = {
     initialCardDeck: TCard[],
@@ -70,13 +70,37 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         setCardDeck(initialCardDeck);
     };
 
-    const handleCardSelect = (cardNumber: "c1" | "c2" | "c3" | "c4" | "c5") => (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const id = e.target.value as TCard["id"] | null;
-        const selectedCard = cardDeck.find(card => card.id === id);
+    const handleValueSelect = (cardNumber: "c1" | "c2" | "c3" | "c4" | "c5") => (e: React.ChangeEvent<HTMLSelectElement>) => {
+        
+        const value = e.target.value as TCard["value"] | null;
+        if (!value) return;
+
+        setCardSelectors(prevCardSelectors => prevCardSelectors.map((cardSelector) => {
+            if (cardSelector.cardNumber !== cardNumber) return cardSelector;
+
+            const suit = cardSelector.card?.suit || "♦";
+            const selectedCard = cardDeck.find(card => (card.value === value) && (card.suit === suit));
+
+            return {
+                ...cardSelector, 
+                card: selectedCard || null,
+            };
+        }));
+
+        return
+    };
+
+    const handleSuitSelect = (cardNumber: "c1" | "c2" | "c3" | "c4" | "c5") => (e: React.ChangeEvent<HTMLSelectElement>) => {
+        
+        const suit = e.target.value as TCard["suit"] | null;
+        if (!suit) return;
 
         setCardSelectors(prevCardSelectors => prevCardSelectors.map((cardSelector) => {
             if (cardSelector.cardNumber !== cardNumber) return cardSelector
             
+            const value = cardSelector.card?.value || "A";
+            const selectedCard = cardDeck.find(card => (card.value === value) && (card.suit === suit));
+
             return {
                 ...cardSelector, 
                 card: selectedCard || null,
@@ -114,13 +138,20 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             <div className="flex flex-col gap-8">
                 {cardSelectors.map((cardSelector) => {
                     return (
-                        <select className="w-fit" key={cardSelector.cardNumber} value={cardSelector.card?.id} onChange={handleCardSelect(cardSelector.cardNumber as "c1" | "c2" | "c3" | "c4" | "c5")} disabled={cardSelector.disabled}>
-                            <option value="">{cardSelector.description}</option>
-                            {cardDeck.map((card) => {
-                                const id = card.id;
-                                return <option key={id} value={id}>{id}</option>
-                            })}
-                        </select>
+                        <div className="flex gap-4" key={cardSelector.cardNumber}>
+                            <select className="w-fit" value={cardSelector.card?.value || ""} onChange={handleValueSelect(cardSelector.cardNumber as "c1" | "c2" | "c3" | "c4" | "c5")} disabled={cardSelector.disabled}>
+                                <option value="">{cardSelector.description}</option>
+                                {values.map((value) => {
+                                    return <option key={value} value={value}>{value}</option>
+                                })}
+                            </select>
+                            <select className="w-fit" value={cardSelector.card?.suit || ""} onChange={handleSuitSelect(cardSelector.cardNumber as "c1" | "c2" | "c3" | "c4" | "c5")} disabled={cardSelector.disabled}>
+                                <option value="">{cardSelector.description}</option>
+                                {suits.map((suit) => {
+                                    return <option key={suit} value={suit}>{suit}</option>
+                                })}
+                            </select>
+                        </div>
                     );
                 })}
             </div>

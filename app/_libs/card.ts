@@ -1,8 +1,8 @@
 // Define all possible suits and values
-const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'] as const;
-const suits = ['♦', '♣', '♥', '♠'] as const;
-const digits = [1, 2, 3 ,4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
-const counts = [0, 1, 2, 3, 4] as const;
+export const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'] as const;
+export const suits = ['♦', '♣', '♥', '♠'] as const;
+export const digits = [1, 2, 3 ,4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
+export const counts = [0, 1, 2, 3, 4] as const;
 
 
 // Define type for digit: value pair
