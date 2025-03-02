@@ -12,8 +12,6 @@ type TNgaoCalculatorComponent = {
  
 export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePairs, initialCardCounter }: TNgaoCalculatorComponent) {
 
-    const cardCounter = initialCardCounter;
-
     // States
     type TCardSelector = {
         cardNumber: "c1" | "c2" | "c3" | "c4" | "c5",
@@ -117,9 +115,31 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
     };
 
     const handleDistribute = () => {
-        if (!canDistributeC1C2C3()) return;
+        if (canDistributeC1C2C3()) {
+            setCardSelectors(prevCardSelectors => prevCardSelectors.map((cardSelector) => {    
+                if (cardSelector.cardNumber === "c1" || cardSelector.cardNumber === "c2" || cardSelector.cardNumber === "c3") {
+                    const [selectedCard] = cardDeck.splice(0, 1)
+                    return {
+                        ...cardSelector, 
+                        card: selectedCard,
+                    };
+                }
+                else return cardSelector;
+            }));
+        }
 
-        // TODO
+        else if (canDistributeC4C5()) {
+            setCardSelectors(prevCardSelectors => prevCardSelectors.map((cardSelector) => {    
+                if (cardSelector.cardNumber === "c4" || cardSelector.cardNumber === "c5") {
+                    const [selectedCard] = cardDeck.splice(0, 1)
+                    return {
+                        ...cardSelector, 
+                        card: selectedCard,
+                    };
+                }
+                else return cardSelector;
+            }));
+        }
     };
 
     const handleValueSelect = (cardNumber: "c1" | "c2" | "c3" | "c4" | "c5") => (e: React.ChangeEvent<HTMLSelectElement>) => {
