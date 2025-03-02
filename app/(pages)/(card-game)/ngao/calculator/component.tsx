@@ -29,6 +29,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         {cardNumber: "c5", card: null, description: "Select Card 5", disabled: true},
     ]);
     const [cardDeck, setCardDeck] = useState(initialCardDeck);
+    const [result, setResult] = useState<string | null>(null);
 
 
     // Functions
@@ -51,6 +52,31 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         return cardSelectors.every(cardSelector => cardSelector.card !== null);
     };
 
+    function calculateFirstResult() {
+        let points = 0;
+        cardSelectors.slice(0, 3).map((cardSelector) => {
+            if ((cardSelector.cardNumber === "c1" || cardSelector.cardNumber === "c2" || cardSelector.cardNumber === "c3") && cardSelector.card?.digit) {
+
+                // J, Q, K with point of 10
+                if (cardSelector.card.digit === 11 || cardSelector.card.digit === 12 || cardSelector.card.digit === 13) points += 10;
+
+                // Others with point of their digit
+                else points += cardSelector.card.digit;
+            }
+        });
+
+        points %= 10;
+        if (points === 0) points = 10;
+
+        setResult(`Result for First Round = ${points}`);
+    };
+
+    function calculateSecondResult() {
+        let points = 0
+
+
+    };
+
 
     // Handlers
     const handleReset = () => {
@@ -68,6 +94,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         ]);
 
         setCardDeck(initialCardDeck);
+        setResult(null);
     };
 
     const handleValueSelect = (cardNumber: "c1" | "c2" | "c3" | "c4" | "c5") => (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -117,12 +144,16 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                 else if (cardSelector.cardNumber === "c4" || cardSelector.cardNumber === "c5") return {...cardSelector, disabled: false};
                 return cardSelector
             }));
+
+            calculateFirstResult();
         }
 
         if (canCalculateSecond()) {
             setCardSelectors(prevCardSelectors => prevCardSelectors.map((cardSelector) => {
                 return {...cardSelector, disabled: true};
             }));
+
+            calculateSecondResult();
         }
     };
 
@@ -155,6 +186,10 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                     );
                 })}
             </div>
+
+            {result && 
+                <p>{result}</p>
+            };
 
         </div>
     );
