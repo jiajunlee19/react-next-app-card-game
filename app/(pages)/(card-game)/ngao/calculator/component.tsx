@@ -1,6 +1,6 @@
 "use client"
 
-import { suits, values, type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
+import { shuffleCardDeck, suits, values, type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
 import { useEffect, useState } from "react";
 
 type TNgaoCalculatorComponent = {
@@ -28,13 +28,31 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         {cardNumber: "c4", card: null, description: "Select Card 4", disabled: true},
         {cardNumber: "c5", card: null, description: "Select Card 5", disabled: true},
     ]);
-    const [cardDeck, setCardDeck] = useState(initialCardDeck);
+    const [cardDeck, setCardDeck] = useState(shuffleCardDeck(initialCardDeck));
     const [result, setResult] = useState<string | null>(null);
 
 
     // Functions
+    function canDistributeC1C2C3() {
+
+        // if either card 1/2/3 selected, return false
+        if (cardSelectors.slice(0, 3).some(cardSelector => cardSelector.card !== null)) return false;
+
+        // if card 1/2/3 are not disabled and card 4/5 are disabled, return true
+        return (!cardSelectors.slice(0, 3).every(cardSelector => cardSelector.disabled) && cardSelectors.slice(3, 5).every(cardSelector => cardSelector.disabled));
+    };
+
+    function canDistributeC4C5() {
+
+        // if either card 4/5 selected, return false
+        if (cardSelectors.slice(3, 5).some(cardSelector => cardSelector.card !== null)) return false;
+
+        // if card 1/2/3 are disabled and card 4/5 are not disabled, return true
+        return (cardSelectors.slice(0, 3).every(cardSelector => cardSelector.disabled) && !cardSelectors.slice(3, 5).every(cardSelector => cardSelector.disabled));
+    };
+
     function canCalculateFirst() {
-        // if card 4 or 5 selected, return false
+        // if either card 4/5 selected, return false
         if (cardSelectors.slice(3, 5).some(cardSelector => cardSelector.card !== null)) return false;
 
         // if all card 1/2/3 are disabled, return false
@@ -72,9 +90,10 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
     };
 
     function calculateSecondResult() {
-        let points = 0
+        let points = 0;
 
-
+        // TODO
+        setResult(prevResult => `${prevResult}\nResult for Second Round = ${points}`)
     };
 
 
@@ -95,6 +114,12 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
 
         setCardDeck(initialCardDeck);
         setResult(null);
+    };
+
+    const handleDistribute = () => {
+        if (!canDistributeC1C2C3()) return;
+
+        // TODO
     };
 
     const handleValueSelect = (cardNumber: "c1" | "c2" | "c3" | "c4" | "c5") => (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -164,7 +189,11 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             <p className="text">Select three cards to calculate your points on the first round. Select another 2 cards to calculate your ox strength on the second round.</p>
             
             <button className="btn-primary w-fit" onClick={handleReset}>Reset</button>
-            <button className="btn-primary w-fit" onClick={handleCalculate} disabled={!canCalculateFirst() && !canCalculateSecond()}>Calculate</button>
+
+            <div className="flex gap-4">
+                <button className="btn-primary w-fit" onClick={handleDistribute} disabled={!canDistributeC1C2C3() && !canDistributeC4C5()}>Distribute</button>
+                <button className="btn-primary w-fit" onClick={handleCalculate} disabled={!canCalculateFirst() && !canCalculateSecond()}>Calculate</button>
+            </div>
 
             <div className="flex flex-col gap-8">
                 {cardSelectors.map((cardSelector) => {
@@ -188,7 +217,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             </div>
 
             {result && 
-                <p>{result}</p>
+                <p className="whitespace-pre-line">{result}</p>
             };
 
         </div>
