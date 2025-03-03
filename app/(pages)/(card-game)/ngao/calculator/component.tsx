@@ -90,7 +90,23 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
     function calculateSecondResult() {
         let points = 0;
 
-        // TODO
+        // When all 5 cards are dukes J/Q/K, you get "Din Shi Gai" or "Five Dukes" = x7 payout
+        if (cardSelectors.every(cardSelector => ["J", "Q", "K"].includes(cardSelector.card?.value ?? ""))) {
+            points = 7;
+        }
+
+        // When Ox strength formed with Ace of spades and a duke, you get "Ngao Dong Gu" = x5 payout	
+
+        // When Ox strength formed with Ace of non-spades and a duke, you get "Ngao Nen Gu" = x3 payout
+
+        // When Ox strength formed with two same value, you get "Double Ox" = x2 payout
+
+        // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
+
+        // When Ox strength formed with no special ox, strength = the ones digit of the sum ranged from 1 to 9, you get "Single Ox" = x1 payout
+
+        // When there's no any three cards sum up to multiple of 10, you get "No Ox" = 0 payout
+
         setResult(prevResult => `${prevResult}\nResult for Second Round = ${points}`)
     };
 
@@ -206,7 +222,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
     return (
         <div className="flex flex-col gap-8 my-4">
 
-            <p className="text">Select three cards to calculate your points on the first round. Select another 2 cards to calculate your ox strength on the second round.</p>
+            <p className="text">Select three cards to calculate your points on the first round. Select another 2 cards to calculate your ox strength on the second round. This calculator generates the best combination to maximize your ox strength.</p>
             
             <button className="btn-primary w-fit" onClick={handleReset}>Reset</button>
 
