@@ -165,6 +165,11 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                 points = 5;
             }
 
+            // When Ox strength formed with Ace of non-spades and a duke, you get "Ngao Nen Gu" = x3 payout
+            if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit !== '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
+                points = 3;
+            }
+            
             finalOxCombinations.push({
                 oxCombination: [
                     `${oxChoice[0].digit}${oxChoice[0].suit}`,
@@ -176,9 +181,9 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                 points: points,
             });
 
-            // When Ox strength formed with Ace of non-spades and a duke, you get "Ngao Nen Gu" = x3 payout
+            
 
-            // When Ox strength formed with two same value, you get "Double Ox" = x2 payout
+            
 
             // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
 
