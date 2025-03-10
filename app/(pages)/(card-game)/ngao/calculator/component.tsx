@@ -142,9 +142,11 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                         ]);
 
                         const remainingCards = cards.filter((_, index) => index !== l && index !== m && index !== r);
+                        if (remainingCards.length !== 2) return;
+                        
                         oxStrengthChoices.push([
-                            {digit: remainingCards[0]?.digit, suit: remainingCards[0]?.suit},
-                            {digit: remainingCards[1]?.digit, suit: remainingCards[1]?.suit},
+                            {digit: remainingCards[0]!.digit, suit: remainingCards[0]!.suit},
+                            {digit: remainingCards[1]!.digit, suit: remainingCards[1]!.suit},
                         ])
                     }
                 }
@@ -160,6 +162,27 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         // For each oxChoice, check which choice is giving out the best ox strength.
         oxChoices.forEach((oxChoice, index) => {
 
+            // By default digit value is the digit, unless its J, Q, K
+            let [oxDigit1, oxSuit1] = [oxChoice[0].digit, oxChoice[0].suit];
+            let [oxDigit2, oxSuit2] = [oxChoice[1].digit, oxChoice[1].suit];
+            let [oxDigit3, oxSuit3] = [oxChoice[2].digit, oxChoice[2].suit];
+            let [oxStrengthDigit1, oxStrengthSuit1] = [oxStrengthChoices[index][0].digit, oxStrengthChoices[index][0].suit];
+            let [oxStrengthDigit2, oxStrengthSuit2] = [oxStrengthChoices[index][1].digit, oxStrengthChoices[index][1].suit];
+
+            // By default digit value is the digit, unless its J, Q, K
+            let oxDigitValue1 = oxDigit1;
+            let oxDigitValue2 = oxDigit2;
+            let oxDigitValue3 = oxDigit3;
+            let oxStrengthDigitValue1 = oxStrengthDigit1;
+            let oxStrengthDigitValue2 = oxStrengthDigit2;
+
+            // For J, Q, K, overwrite digit value to 10
+            if (oxDigit1 > 10) oxDigitValue1 = 10;
+            if (oxDigit2 > 10) oxDigitValue2 = 10;
+            if (oxDigit3 > 10) oxDigitValue3 = 10;
+            if (oxStrengthDigit1 > 10) oxStrengthDigitValue1 = 10;
+            if (oxStrengthDigit2 > 10) oxStrengthDigitValue2 = 10;
+
             // When Ox strength formed with Ace of spades and a duke, you get "Ngao Dong Gu" = x5 payout	
             if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit === '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
                 points = 5;
@@ -171,17 +194,22 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             }
             
             // When Ox strength formed with two same value, you get "Double Ox" = x2 payout
-            if (oxStrengthChoices[index][0].digit === oxStrengthChoices[index][1].digit) {
+            if (oxStrengthDigit1 === oxStrengthDigit2) {
+                points = 2;
+            }
+
+            // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
+            if (oxStrengthDigitValue1 + oxStrengthDigitValue2 % 10 === 0) {
                 points = 2;
             }
 
             finalOxCombinations.push({
                 oxCombination: [
-                    `${oxChoice[0].digit}${oxChoice[0].suit}`,
-                    `${oxChoice[1].digit}${oxChoice[1].suit}`,
-                    `${oxChoice[2].digit}${oxChoice[2].suit}`,
-                    `${oxStrengthChoices[index][0].digit}${oxStrengthChoices[index][0].suit}`,
-                    `${oxStrengthChoices[index][1].digit}${oxStrengthChoices[index][1].suit}`,
+                    `${oxDigit1}${oxSuit1}`,
+                    `${oxDigit2}${oxSuit2}`,
+                    `${oxDigit3}${oxSuit3}`,
+                    `${oxStrengthDigit1}${oxStrengthSuit1}`,
+                    `${oxStrengthDigit2}${oxStrengthSuit2}`,
                 ], 
                 points: points,
             });
@@ -189,7 +217,6 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             
 
             
-            // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
 
             // When Ox strength formed with no special ox, strength = the ones digit of the sum ranged from 1 to 9, you get "Single Ox" = x1 payout
 
