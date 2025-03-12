@@ -184,8 +184,13 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             if (oxStrengthDigit1 > 10) oxStrengthDigitValue1 = 10;
             if (oxStrengthDigit2 > 10) oxStrengthDigitValue2 = 10;
 
+            // When all 5 cards are dukes J/Q/K, you get "Din Shi Gai" or "Five Dukes" = x7 payout
+            if (cardSelectors.every(cardSelector => ["J", "Q", "K"].includes(cardSelector.card?.value ?? ""))) {
+                points = 7;
+            }
+
             // When Ox strength formed with Ace of spades and a duke, you get "Ngao Dong Gu" = x5 payout	
-            if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit === '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
+            else if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit === '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
                 points = 5;
             }
 
@@ -224,10 +229,6 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
 
         });
 
-        // When all 5 cards are dukes J/Q/K, you get "Din Shi Gai" or "Five Dukes" = x7 payout
-        if (cardSelectors.every(cardSelector => ["J", "Q", "K"].includes(cardSelector.card?.value ?? ""))) {
-            points = 7;
-        }
 
 
 
