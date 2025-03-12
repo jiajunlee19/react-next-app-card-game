@@ -92,7 +92,12 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         let points = 0;
         let oxChoices = [];
         let oxStrengthChoices = [];
-        let finalOxCombinations = [];
+
+        type TOxCombination = {
+            oxCombination: [string, string, string, string, string],
+            points: number,
+        };
+        let finalOxCombinations: TOxCombination[] = [];
 
         // We will have 3 cards at the bottom and 2 cards at the top.
         //  _ _     <--- this is your ox strength
@@ -216,13 +221,20 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                 points += 1;
             }
 
+            // Convert digits back to A J Q K values
+            const oxValue1 = digitValuePairs[oxDigit1];
+            const oxValue2 = digitValuePairs[oxDigit2];
+            const oxValue3 = digitValuePairs[oxDigit3];
+            const oxStrengthValue1 = digitValuePairs[oxStrengthDigit1];
+            const oxStrengthValue2 = digitValuePairs[oxStrengthDigit2];
+
             finalOxCombinations.push({
                 oxCombination: [
-                    `${oxDigit1}${oxSuit1}`,
-                    `${oxDigit2}${oxSuit2}`,
-                    `${oxDigit3}${oxSuit3}`,
-                    `${oxStrengthDigit1}${oxStrengthSuit1}`,
-                    `${oxStrengthDigit2}${oxStrengthSuit2}`,
+                    `${oxValue1}${oxSuit1}`,
+                    `${oxValue2}${oxSuit2}`,
+                    `${oxValue3}${oxSuit3}`,
+                    `${oxStrengthValue1}${oxStrengthSuit1}`,
+                    `${oxStrengthValue2}${oxStrengthSuit2}`,
                 ], 
                 points: points,
             });
@@ -233,7 +245,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
 
 
 
-        setResult(prevResult => `${prevResult}\nResult for Second Round = ${points}\n${JSON.stringify(oxChoices)}`)
+        setResult(prevResult => `${prevResult}\nResult for Second Round = ${points}\n${JSON.stringify(finalOxCombinations)}`)
     };
 
 
