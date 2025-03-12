@@ -190,17 +190,19 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             if (oxStrengthDigit2 > 10) oxStrengthDigitValue2 = 10;
 
             // When all 5 cards are dukes J/Q/K, you get "Din Shi Gai" or "Five Dukes" = x7 payout
-            if (cardSelectors.every(cardSelector => ["J", "Q", "K"].includes(cardSelector.card?.value ?? ""))) {
+            if (cardSelectors.every(cardSelector => [11, 12, 13].includes(cardSelector.card?.digit ?? 0))) {
                 points = 7;
             }
 
             // When Ox strength formed with Ace of spades and a duke, you get "Ngao Dong Gu" = x5 payout	
-            else if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit === '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
+            else if ((oxStrengthChoices[index][0].digit === 1 && oxStrengthChoices[index][0].suit === '♠' && [11, 12, 13].includes(oxStrengthChoices[index][1].digit)) || 
+                        (oxStrengthChoices[index][1].digit === 1 && oxStrengthChoices[index][1].suit === '♠' && [11, 12, 13].includes(oxStrengthChoices[index][0].digit))) {
                 points = 5;
             }
 
             // When Ox strength formed with Ace of non-spades and a duke, you get "Ngao Nen Gu" = x3 payout
-            else if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit !== '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
+            else if ((oxStrengthChoices[index][0].digit === 1 && oxStrengthChoices[index][0].suit !== '♠' && [11, 12, 13].includes(oxStrengthChoices[index][1].digit)) || 
+                        (oxStrengthChoices[index][1].digit === 1 && oxStrengthChoices[index][1].suit !== '♠' && [11, 12, 13].includes(oxStrengthChoices[index][0].digit))) {
                 points = 3;
             }
             
