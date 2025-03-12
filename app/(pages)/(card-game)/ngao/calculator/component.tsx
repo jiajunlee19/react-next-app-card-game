@@ -212,7 +212,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             }
 
             // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
-            else if (oxStrengthDigitValue1 + oxStrengthDigitValue2 % 10 === 0) {
+            else if ((oxStrengthDigitValue1 + oxStrengthDigitValue2) % 10 === 0) {
                 points = 2;
             }
 
