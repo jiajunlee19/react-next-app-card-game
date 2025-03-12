@@ -153,8 +153,9 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             }
         };
         
-        // If no ox, return the result as it is
+        // When there's no any three cards sum up to multiple of 10, you get "No Ox" = 0 payout
         if (oxChoices.length < 1) {
+            points = 0
             setResult(prevResult => `${prevResult}\nResult for Second Round = 0 (No Ox)`)
             return;
         }
@@ -189,18 +190,25 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             }
 
             // When Ox strength formed with Ace of non-spades and a duke, you get "Ngao Nen Gu" = x3 payout
-            if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit !== '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
+            else if (oxStrengthChoices[index].some(card => card.digit === 1 && card.suit !== '♠') && oxStrengthChoices[index].some(card => [11, 12, 13].includes(card?.digit ?? 0))) {
                 points = 3;
             }
             
             // When Ox strength formed with two same value, you get "Double Ox" = x2 payout
-            if (oxStrengthDigit1 === oxStrengthDigit2) {
+            else if (oxStrengthDigit1 === oxStrengthDigit2) {
                 points = 2;
             }
 
             // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
-            if (oxStrengthDigitValue1 + oxStrengthDigitValue2 % 10 === 0) {
+            else if (oxStrengthDigitValue1 + oxStrengthDigitValue2 % 10 === 0) {
                 points = 2;
+            }
+
+            // When Ox strength formed with no special ox, strength = the ones digit of the sum ranged from 1 to 9, you get "Single Ox" = x1 payout
+            else {
+                points = (oxStrengthDigitValue1 + oxStrengthDigitValue2) % 10;
+                points /= 10;
+                points += 1;
             }
 
             finalOxCombinations.push({
@@ -213,14 +221,6 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                 ], 
                 points: points,
             });
-
-            
-
-            
-
-            // When Ox strength formed with no special ox, strength = the ones digit of the sum ranged from 1 to 9, you get "Single Ox" = x1 payout
-
-            // When there's no any three cards sum up to multiple of 10, you get "No Ox" = 0 payout
 
         });
 
