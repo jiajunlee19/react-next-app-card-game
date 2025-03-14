@@ -299,6 +299,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                     return {
                         ...cardSelector, 
                         card: selectedCard,
+                        disabled: true,
                     };
                 }
                 else return cardSelector;
@@ -312,6 +313,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                     return {
                         ...cardSelector, 
                         card: selectedCard,
+                        disabled: true,
                     };
                 }
                 else return cardSelector;
