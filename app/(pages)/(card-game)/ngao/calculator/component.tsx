@@ -145,7 +145,14 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                     if (digit3 > 10) digitValue3 = 10;
 
                     // If the sum is equal to multiplier of 10, add them into oxChoices and oxStrengthChoices accordingly
-                    if ((digitValue1 + digitValue2 + digitValue3) % 10 === 0) {
+                    if (((digitValue1 + digitValue2 + digitValue3) % 10 === 0) || 
+                            ((digitValue1 + digitValue2 + interchangeThreeOrSix(digitValue3)) % 10 === 0) ||
+                            ((digitValue1 + interchangeThreeOrSix(digitValue2) + digitValue3) % 10 === 0) ||
+                            ((digitValue1 + interchangeThreeOrSix(digitValue2) + interchangeThreeOrSix(digitValue3)) % 10 === 0) ||
+                            ((interchangeThreeOrSix(digitValue1) + digitValue2 + digitValue3) % 10 === 0) ||
+                            ((interchangeThreeOrSix(digitValue1) + digitValue2 + interchangeThreeOrSix(digitValue3)) % 10 === 0) ||
+                            ((interchangeThreeOrSix(digitValue1) + interchangeThreeOrSix(digitValue2) + digitValue3) % 10 === 0) ||
+                            ((interchangeThreeOrSix(digitValue1) + interchangeThreeOrSix(digitValue2) + interchangeThreeOrSix(digitValue3)) % 10 === 0)) {
                         oxChoices.push([
                             { digit: digit1, suit: suit1 },
                             { digit: digit2, suit: suit2 },
