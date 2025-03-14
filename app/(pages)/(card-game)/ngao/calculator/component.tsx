@@ -87,6 +87,12 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         setResult(`Result for First Round = ${points}`);
     };
 
+    function interchangeThreeOrSix(digit: TCard["digit"]) {
+        if (digit === 3) return 6;
+        if (digit === 6) return 3;
+        return digit;
+    };
+
     function calculateSecondResult() {
 
         let points = 0;
@@ -212,13 +218,21 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             }
 
             // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
-            else if ((oxStrengthDigitValue1 + oxStrengthDigitValue2) % 10 === 0) {
+            else if (((oxStrengthDigitValue1 + oxStrengthDigitValue2) % 10 === 0) || 
+                        ((interchangeThreeOrSix(oxStrengthDigitValue1) + oxStrengthDigitValue2) % 10 === 0) ||
+                        ((oxStrengthDigitValue1 + interchangeThreeOrSix(oxStrengthDigitValue2)) % 10 === 0) ||
+                        ((interchangeThreeOrSix(oxStrengthDigitValue1) + interchangeThreeOrSix(oxStrengthDigitValue2)) % 10 === 0)
+            ) {
                 points = 2;
             }
 
             // When Ox strength formed with no special ox, strength = the ones digit of the sum ranged from 1 to 9, you get "Single Ox" = x1 payout
             else {
-                points = (oxStrengthDigitValue1 + oxStrengthDigitValue2) % 10;
+                points = Math.max(((oxStrengthDigitValue1 + oxStrengthDigitValue2) % 10),
+                                    ((interchangeThreeOrSix(oxStrengthDigitValue1) + oxStrengthDigitValue2) % 10),
+                                    ((oxStrengthDigitValue1 + interchangeThreeOrSix(oxStrengthDigitValue2)) % 10),
+                                    ((interchangeThreeOrSix(oxStrengthDigitValue1) + interchangeThreeOrSix(oxStrengthDigitValue2)) % 10),     
+                                );
                 points /= 10;
                 points += 1;
             }
