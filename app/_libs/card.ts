@@ -77,13 +77,15 @@ export function getCardDeck() {
 // shuffle() returns a shuffled list, using Fisher-Yates Sorting Algorithm
 export function shuffleCardDeck(cardDeck: TCard[]) {
 
+    const cardDeckCopy = [...cardDeck];
+
     // Starting from the end of card until the beginning, keep swapping the current card with a random card before it.
-    for (let i = cardDeck.length-1; i>0; i--) {
+    for (let i = cardDeckCopy.length-1; i>0; i--) {
         const j = Math.floor(Math.random() * (i+1));
-        [cardDeck[i], cardDeck[j]] = [cardDeck[j], cardDeck[i]]
+        [cardDeckCopy[i], cardDeckCopy[j]] = [cardDeckCopy[j], cardDeckCopy[i]]
     };
 
-    return [...cardDeck];
+    return cardDeckCopy;
 
 };
 
