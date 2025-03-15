@@ -1,7 +1,8 @@
 "use client"
 
-import { shuffleCardDeck, suits, values, type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
+import { shuffleCardDeck, suits, type TBoardCard, values, type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
 import { useEffect, useState } from "react";
+import { CardComponent } from "@/app/(pages)/(card-game)/in-between/card";
 
 type TNgaoCalculatorComponent = {
     initialCardDeck: TCard[],
@@ -28,6 +29,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
     ]);
     const [cardDeck, setCardDeck] = useState(shuffleCardDeck(initialCardDeck));
     const [result, setResult] = useState<string | null>(null);
+    const [bestOxCombination, setBestOxCombination] = useState<[TCard["id"],TCard["id"],TCard["id"],TCard["id"],TCard["id"]] | []>([]);
 
 
     // Functions
@@ -265,10 +267,14 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         });
 
 
+        // Identify best ox combination based on the highest points
+        const highestPointsCombination = finalOxCombinations.reduce((max, current) => {
+            return (current.points > max.points) ? current : max;
+        }, finalOxCombinations[0]);
 
-
-
-        setResult(prevResult => `${prevResult}\nResult for Second Round = ${points}\n${JSON.stringify(finalOxCombinations)}`)
+        const bestOxCombination = highestPointsCombination.oxCombination as [TCard["id"],TCard["id"],TCard["id"],TCard["id"],TCard["id"],];
+        setResult(prevResult => `${prevResult}\nResult for Second Round = ${points}`);
+        setBestOxCombination(bestOxCombination);
     };
 
 
@@ -289,6 +295,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
 
         setCardDeck(initialCardDeck);
         setResult(null);
+        setBestOxCombination([]);
     };
 
     const handleDistribute = () => {
@@ -415,7 +422,27 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
 
             {result && 
                 <p className="whitespace-pre-line">{result}</p>
-            };
+            }
+
+            <div className="grid grid-cols-2 gap-4 place-items-center">
+                {bestOxCombination.slice(3, 5).map((comb, index) => {
+                    const cardNumber = `c${index+1}` as TBoardCard["cardNumber"];
+                    const card = initialCardDeck.find(card => card.id === comb);
+                    return (
+                        <CardComponent key={index} boardCard={{cardNumber: cardNumber , face: "up", card: card ?? null}} />
+                    );
+                })}
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 place-items-center">
+                {bestOxCombination.slice(0, 3).map((comb, index) => {
+                    const cardNumber = `c${index+3}` as TBoardCard["cardNumber"];
+                    const card = initialCardDeck.find(card => card.id === comb);
+                    return (
+                        <CardComponent key={index} boardCard={{cardNumber: cardNumber , face: "up", card: card ?? null}} />
+                    );
+                })}
+            </div>
 
         </div>
     );
