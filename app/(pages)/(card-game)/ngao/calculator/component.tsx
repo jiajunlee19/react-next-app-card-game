@@ -98,12 +98,14 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
     function calculateSecondResult() {
 
         let points = 0;
+        let description = "";
         let oxChoices = [];
         let oxStrengthChoices = [];
 
         type TOxCombination = {
             oxCombination: [string, string, string, string, string],
             points: number,
+            description: string,
         };
         let finalOxCombinations: TOxCombination[] = [];
 
@@ -207,23 +209,27 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
             // When all 5 cards are dukes J/Q/K, you get "Din Shi Gai" or "Five Dukes" = x7 payout
             if (cardSelectors.every(cardSelector => [11, 12, 13].includes(cardSelector.card?.digit ?? 0))) {
                 points = 7;
+                description = "Din Shi Gai";
             }
 
             // When Ox strength formed with Ace of spades and a duke, you get "Ngao Dong Gu" = x5 payout	
             else if ((oxStrengthChoices[index][0].digit === 1 && oxStrengthChoices[index][0].suit === '♠' && [11, 12, 13].includes(oxStrengthChoices[index][1].digit)) || 
                         (oxStrengthChoices[index][1].digit === 1 && oxStrengthChoices[index][1].suit === '♠' && [11, 12, 13].includes(oxStrengthChoices[index][0].digit))) {
                 points = 5;
+                description = "Ngao Dong Gu";
             }
 
             // When Ox strength formed with Ace of non-spades and a duke, you get "Ngao Nen Gu" = x3 payout
             else if ((oxStrengthChoices[index][0].digit === 1 && oxStrengthChoices[index][0].suit !== '♠' && [11, 12, 13].includes(oxStrengthChoices[index][1].digit)) || 
                         (oxStrengthChoices[index][1].digit === 1 && oxStrengthChoices[index][1].suit !== '♠' && [11, 12, 13].includes(oxStrengthChoices[index][0].digit))) {
                 points = 3;
+                description = "Ngao Nen Gu";
             }
             
             // When Ox strength formed with two same value, you get "Double Ox" = x2 payout
             else if (oxStrengthDigit1 === oxStrengthDigit2) {
                 points = 2;
+                description = "Double Ox"
             }
 
             // When Ox strength formed with no special ox and ones digit of the sum = 0 or 10, you get "Single Ox 10" = x2 payout
@@ -233,6 +239,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                         ((interchangeThreeOrSix(oxStrengthDigitValue1) + interchangeThreeOrSix(oxStrengthDigitValue2)) % 10 === 0)
             ) {
                 points = 2;
+                description = "Single Ox 10"
             }
 
             // When Ox strength formed with no special ox, strength = the ones digit of the sum ranged from 1 to 9, you get "Single Ox" = x1 payout
@@ -242,6 +249,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                                     ((oxStrengthDigitValue1 + interchangeThreeOrSix(oxStrengthDigitValue2)) % 10),
                                     ((interchangeThreeOrSix(oxStrengthDigitValue1) + interchangeThreeOrSix(oxStrengthDigitValue2)) % 10),     
                                 );
+                description = `Single Ox ${points}`
                 points /= 10;
                 points += 1;
             }
@@ -262,6 +270,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                     `${oxStrengthValue2}${oxStrengthSuit2}`,
                 ], 
                 points: points,
+                description: description,
             });
 
         });
@@ -273,7 +282,7 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         }, finalOxCombinations[0]);
 
         const bestOxCombination = highestPointsCombination.oxCombination as [TCard["id"],TCard["id"],TCard["id"],TCard["id"],TCard["id"],];
-        setResult(prevResult => `${prevResult}\nResult for Second Round = ${points}`);
+        setResult(prevResult => `${prevResult}\nResult for Second Round = ${points} (${highestPointsCombination.description})`);
         setBestOxCombination(bestOxCombination);
     };
 
