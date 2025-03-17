@@ -1,17 +1,16 @@
 "use client"
 
 import { shuffleCardDeck, suits, type TBoardCard, values, type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardComponent } from "@/app/(pages)/(card-game)/in-between/card";
 
 type TNgaoCalculatorComponent = {
     initialCardDeck: TCard[],
     digitValuePairs: TDigitValuePairs,
-    initialCardCounter: TRemainingCardCounter,
 };
 
  
-export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePairs, initialCardCounter }: TNgaoCalculatorComponent) {
+export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePairs }: TNgaoCalculatorComponent) {
 
     // States
     type TCardSelector = {
