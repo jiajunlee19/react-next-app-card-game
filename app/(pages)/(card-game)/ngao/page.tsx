@@ -60,8 +60,7 @@ export default function NgaoIntroPage() {
             <BaseTable columns={columns} data={oxTypes} />
 
             <h2 id="play">Play the Game</h2>
-            <p>To play the game, navigate to the <Link href="/ngao/game">Ngao Game</Link>.</p>
-            <p>To record the revealed cards and calculate the win/lose probability, navigate to the <Link href="/ngao/calculator">Ngao Calculator</Link>.</p>
+            <p>To calculate your ngao strength or to play the game, navigate to the <Link href="/ngao/calculator">Ngao Calculator</Link>.</p>
             <br />
             <br />
         </>
