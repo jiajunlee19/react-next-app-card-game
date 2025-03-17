@@ -132,9 +132,9 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         for (let l=0; l<n-2; l++) {
             for (let m=l+1; m<n-1; m++) {
                 for (let r=m+1; r<n; r++) {
-                    let [digit1, suit1] = [cardSelectors[l].card?.digit, cardSelectors[l].card?.suit];
-                    let [digit2, suit2] = [cardSelectors[m].card?.digit, cardSelectors[m].card?.suit];
-                    let [digit3, suit3] = [cardSelectors[r].card?.digit, cardSelectors[r].card?.suit];
+                    let [digit1, suit1] = [cards[l]?.digit, cards[l]?.suit];
+                    let [digit2, suit2] = [cards[m]?.digit, cards[m]?.suit];
+                    let [digit3, suit3] = [cards[r]?.digit, cards[r]?.suit];
 
                     if (!digit1 || !digit2 || !digit3 || !suit1 || !suit2 || !suit3) return;
 
