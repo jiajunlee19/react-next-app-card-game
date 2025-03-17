@@ -2,7 +2,9 @@
 
 import { shuffleCardDeck, suits, type TBoardCard, values, type TCard, type TDigitValuePairs, type TRemainingCardCounter } from "@/app/_libs/card";
 import { useState } from "react";
-import { CardComponent } from "@/app/(pages)/(card-game)/in-between/card";
+import { CardComponent } from "@/app/(pages)/(card-game)/card";
+import BaseTable from "@/app/_components/basic/table";
+import { columns } from "@/app/(pages)/(card-game)/ngao/calculator/columns";
 
 type TNgaoCalculatorComponent = {
     initialCardDeck: TCard[],
@@ -29,6 +31,15 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
     const [cardDeck, setCardDeck] = useState(shuffleCardDeck(initialCardDeck));
     const [result, setResult] = useState<string | null>(null);
     const [bestOxCombination, setBestOxCombination] = useState<[TCard["id"],TCard["id"],TCard["id"],TCard["id"],TCard["id"]] | []>([]);
+
+
+    // Arrays
+    type TOxCombination = {
+        oxCombination: [string, string, string, string, string],
+        points: number,
+        description: string,
+    };
+    let finalOxCombinations: TOxCombination[] = [];
 
 
     // Functions
@@ -101,12 +112,8 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
         let oxChoices = [];
         let oxStrengthChoices = [];
 
-        type TOxCombination = {
-            oxCombination: [string, string, string, string, string],
-            points: number,
-            description: string,
-        };
-        let finalOxCombinations: TOxCombination[] = [];
+
+        finalOxCombinations = [];
 
         // We will have 3 cards at the bottom and 2 cards at the top.
         //  _ _     <--- this is your ox strength
@@ -451,6 +458,8 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                     );
                 })}
             </div>
+
+            <BaseTable columns={columns} data={finalOxCombinations} />
 
         </div>
     );

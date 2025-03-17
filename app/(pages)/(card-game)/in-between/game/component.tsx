@@ -3,7 +3,7 @@
 import { type TCard, type TBoardCard, type TRemainingCardCounter, getInitialCardCounter, calculateCardLeft, getDigitValuePairs } from "@/app/_libs/card";
 import { shuffleCardDeck } from '@/app/_libs/card';
 import { useEffect, useRef, useState } from 'react';
-import { CardComponent, StackedCardDeckComponent } from "@/app/(pages)/(card-game)/in-between/card";
+import { CardComponent, StackedCardDeckComponent } from "@/app/(pages)/(card-game)/card";
 import Link from "next/link";
 
 type TInBetweenComponent = {
