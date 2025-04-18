@@ -36,6 +36,7 @@ export default function Header() {
     const actionNavLinks = [
         { name: "In-Between Card Game", href: "/in-between", icon: "" },
         { name: "Ngao Card Game", href: "/ngao", icon: "" },
+        { name: "GemTD Game", href: "/gemtd", icon: "" },
     ];
 
     const actionNavLinksProtected = [
@@ -178,7 +179,7 @@ export default function Header() {
                     }>
                     <ul role="list">
                         <li>
-                            <h2>Card Games</h2>
+                            <h2>Games</h2>
                             <div className="relative my-3 pl-2">
                                 <div className="absolute inset-x-0 top-0 h-16 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5 origin-[50%_50%_1px]" />
                                 <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/50 transform-none origin-[50%_50%_1px]" />
