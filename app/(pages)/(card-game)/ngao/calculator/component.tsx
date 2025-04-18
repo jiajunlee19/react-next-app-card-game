@@ -459,8 +459,6 @@ export default function NgaoCalculatorComponent({ initialCardDeck, digitValuePai
                 })}
             </div>
 
-            <BaseTable columns={columns} data={finalOxCombinations} />
-
         </div>
     );
 };
