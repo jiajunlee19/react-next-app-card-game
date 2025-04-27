@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import GemTDUrsolTrainerComponent from './component';
 
 export const metadata: Metadata = {
     title: {
@@ -12,6 +13,7 @@ export default function GemTDUrsolTrainerPage() {
 
     return (
         <>
+            <GemTDUrsolTrainerComponent />
         </>
     )
 };
