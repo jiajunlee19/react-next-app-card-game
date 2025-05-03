@@ -24,10 +24,10 @@ export default function GemTDAutoPage() {
                     <ul className="list-inside list-decimal">
                         <li className="text">Auto send defined instruction chat into gemtd channel every 10mins as long as its not in a game and ready to play, to attract yourself to be invited to a game</li>
                         <li className="text">Auto accept party invites, as long as its not in a game and ready to play</li>
-                        <li className="text">Auto accept game ready, you don't have to be coach for this</li>
+                        <li className="text">Auto accept game ready, you dont have to be coach for this</li>
                         <li className="text">Auto select heroes based on latest in-game chat message, prompted based on hash-enclosed keywords #XXXXXX#</li>
                         <li className="text">Auto click continue on post-game (win/lose) to return into main lobby</li>
-                        <li className="text">Auto reconnect if disconnected, checked every 10mins (unless there's a long network down)</li>
+                        <li className="text">Auto reconnect if disconnected, checked every 10mins (unless theres a long network down)</li>
                         <li className="text">Repeats everything in an interval of 5 seconds, until user clicked CTRL+C to stop the script</li>
                         <li className="text">Auto check if game is outdated. If outdated, an email will be sent over to notify user to manually restart the game and the script.</li>
                     </ul>
