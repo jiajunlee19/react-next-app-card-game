@@ -55,6 +55,7 @@ export default function GemTDntroPage() {
 
             <h2 id="play">Play the Game</h2>
             <p>To learn or train your URSOL skill, navigate to the <Link href="/gemtd/ursol-trainer">Ursol Trainer</Link>.</p>
+            <p>Wanted to AFK in gemtd without physically present to accept games? Navigate to the <Link href="/gemtd/gemtd-auto">gemtd-auto</Link> solution.</p>
             <br />
             <br />
         </>
