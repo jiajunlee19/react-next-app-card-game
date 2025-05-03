@@ -642,6 +642,12 @@ export async function updateUserLDAP(username: TUsernameSchema | unknown, passwo
 
 export async function signUp(username: TUsernameSchema | unknown, password: TPasswordSchema | unknown): StatePromise {
 
+    const session = await getServerSession(options);
+
+    if (!session || (session.user.role !== 'boss' && session.user.role !== 'admin')) {
+        redirect("/denied");
+    }
+
     const now = new Date();
 
     const parsedForm = signUpSchema.safeParse({
