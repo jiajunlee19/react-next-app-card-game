@@ -44,7 +44,7 @@ export default async function User(
     return (
         <>
             <h1>{pageTitle}</h1>
-            <Link className="btn btn-primary w-min no-underline p-[1%]" href="/restricted/user/signUp">
+            <Link className="btn btn-primary w-min no-underline p-[1%]" href="/restricted/auth/user/signUp">
                 {createButtonTitle}
             </Link>
             <Suspense fallback={<TableSkeleton columnCount={4} rowCount={10} />}>
