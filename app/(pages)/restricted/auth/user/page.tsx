@@ -10,6 +10,7 @@ import { columns } from "@/app/(pages)/restricted/auth/user/columns";
 import { type TReadUserWithoutPassSchema } from "@/app/_libs/zod_auth";
 import { Suspense } from "react";
 import type { Metadata } from 'next';
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: 'User',
@@ -36,15 +37,20 @@ export default async function User(
 
     const pageTitle = 'Manage User';
 
+    const createButtonTitle = 'Sign Up User';
+
     const readAction = readUserByPage;
 
     return (
-      <>
-          <h1>{pageTitle}</h1>
-          <Suspense fallback={<TableSkeleton columnCount={4} rowCount={10} />}>
-              <DataTable itemsPerPage={itemsPerPage} currentPage={currentPage} query={query} readAction={readAction} columns={columns} />
-          </Suspense>
-          <Pagination totalPage={totalPage} />
-      </>
+        <>
+            <h1>{pageTitle}</h1>
+            <Link className="btn btn-primary w-min no-underline p-[1%]" href="/restricted/user/signUp">
+                {createButtonTitle}
+            </Link>
+            <Suspense fallback={<TableSkeleton columnCount={4} rowCount={10} />}>
+                <DataTable itemsPerPage={itemsPerPage} currentPage={currentPage} query={query} readAction={readAction} columns={columns} />
+            </Suspense>
+            <Pagination totalPage={totalPage} />
+        </>
     )
 }
