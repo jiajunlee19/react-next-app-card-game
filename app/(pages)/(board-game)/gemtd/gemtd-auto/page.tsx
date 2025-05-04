@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function GemTDAutoPage() {
 
-    const [amount, currency] = ["500", "MYR"];
+    const [amount, currency] = ["200", "MYR"];
     const wiseUrl = `https://wise.com/pay/me/jiajunl139?amount=${amount}&currency=${currency}`;
     const wiseReferralUrl = "https://wise.com/invite/ahpn/jiajunl139";
 
@@ -34,9 +34,11 @@ export default function GemTDAutoPage() {
                 </div>
 
                 <h3>Interested to buy the bot ?</h3>
-                <p>You will receive a zip file with executable to run the bot, no programming skills needed, anyone can run the executable.</p>
-                <p>The bot works for lifetime, show support by buying it with MYR500 ! Only Wise Payment is supported now.</p>
-                <div className="flex gap-8 mt-4">
+                <p>You will receive a zip file with executable to run the bot</p>
+                <p>You dont have to worry about the compatibility, we have a step-by-step guide on how to configure and make it work for you. No programming skills needed !</p>
+                <p>The bot will work for entire lifetime, show support by buying it with MYR200 ! Only Wise Payment is supported now.</p>
+
+                <div className="flex gap-8 mt-4 mb-4">
                     <a href={wiseReferralUrl} target="_blank" rel="noopener noreferrer">
                         <button className="btn-secondary rounded-md px-4 py-2">New to Wise? Redeem free card or transfer up to MYR2500</button>
                     </a>
@@ -44,6 +46,8 @@ export default function GemTDAutoPage() {
                         <button className="btn-primary rounded-md px-4 py-2">Pay Me with Wise</button>
                     </a>
                 </div>
+
+                <p>Wanted to have a look on the demo? Drop me a friend request in Steam Dota 2 ID: 150847511</p>
             </div>
         </>
     )
