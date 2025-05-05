@@ -33,10 +33,10 @@ export default function GemTDAutoPage() {
                     </ul>
                 </div>
 
-                <h3>Interested to buy the bot ?</h3>
-                <p>You will receive a zip file with executable to run the bot</p>
+                <h3>Interested ?</h3>
+                <p>You will receive an installer with executable to run the bot</p>
                 <p>You dont have to worry about the compatibility, we have a step-by-step guide on how to configure and make it work for you. No programming skills needed !</p>
-                <p>The bot will work for entire lifetime, show support by buying it with MYR200 ! Only Wise Payment is supported now.</p>
+                <p>The bot will work for entire lifetime, show support by buying the bot! Only Wise Payment is supported now.</p>
 
                 <div className="flex gap-8 mt-4 mb-4">
                     <a href={wiseReferralUrl} target="_blank" rel="noopener noreferrer">
@@ -47,7 +47,7 @@ export default function GemTDAutoPage() {
                     </a>
                 </div>
 
-                <p>Wanted to have a look on the demo? Drop me a friend request in Steam Dota 2 ID: 150847511</p>
+                <p>Wanted to have a look on the demo or need help on customizing the bot? Drop me a friend request in Steam Dota 2 ID: 150847511 !</p>
             </div>
         </>
     )
