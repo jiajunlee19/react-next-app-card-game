@@ -55,6 +55,16 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
         })
     }
 
+    function reset() {
+        const confirmReset = window.confirm("Are you sure to reset into your last saved maze ?");
+        if (!confirmReset) {
+            return;
+        }
+
+        setMaze(mazes[0]);
+        setHistory([mazes[0]]);
+    }
+
 
 
     return (
@@ -77,7 +87,8 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
                 }))}
             </div>
             <div className="flex gap-10">
-                <button className="btn btn-primary h-min" onClick={() => undo()} disabled={!canUndo()}>undo</button>
+                <button className="btn btn-primary h-min" onClick={() => undo()} disabled={!canUndo()}>Undo</button>
+                <button className="btn btn-primary h-min" onClick={() => reset()}>Reset</button>
             </div>
         </div>
     );
