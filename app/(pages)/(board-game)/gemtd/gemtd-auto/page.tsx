@@ -43,7 +43,7 @@ export default function GemTDAutoPage() {
                         <button className="btn-secondary rounded-md px-4 py-2">New to Wise? Redeem free card or transfer up to MYR2500</button>
                     </a>
                     <a href={wiseUrl} target="_blank" rel="noopener noreferrer">
-                        <button className="btn-primary rounded-md px-4 py-2">Pay Me with Wise</button>
+                        <button className="btn-primary rounded-md px-4 py-2">Buy me a coffee</button>
                     </a>
                 </div>
 
