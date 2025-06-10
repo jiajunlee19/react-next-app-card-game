@@ -11,12 +11,26 @@ type TGemTDDUrsolTrainerComponent = {
  
 export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerComponent) {
 
-    // States
+    // Constants
     const gridSize = 37;
+    const gems = {
+        "G": { name: "G", style: "bg-green-700 text-white" },
+        "R": { name: "R", style: "bg-red-700 text-white" },
+        "Y": { name: "Y", style: "bg-yellow-700 text-white" },
+        "B": { name: "B", style: "bg-blue-500 text-white" },
+        "D": { name: "D", style: "bg-blue-800 text-white" },
+        "P": { name: "P", style: "bg-purple-700 text-white" },
+        "Q": { name: "Q", style: "bg-pink-500 text-white" },
+        "E": { name: "E", style: "bg-orange-500 text-white" },
+    };
+    type TGem = keyof typeof gems;
+
+    // States
     const [maze, setMaze] = useState(mazes[0]);
     const [history, setHistory] = useState<string[][][]>([mazes[0]]);
+    const [selectedGem, setSelectedGem] = useState<typeof gems[keyof typeof gems]>({ name: "G", style: "bg-green-700 text-white" });
 
-    
+
     // Effects
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -46,7 +60,7 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
         if (!canPlace(cell)) return
         
         const newMaze = maze.map(row => [...row]);
-        newMaze[i][j] = "G"
+        newMaze[i][j] = selectedGem.name
 
         setHistory([...history, newMaze]); // Store only the changed cell
 
@@ -96,6 +110,10 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
         }
     }
 
+    function selectGem(gem: typeof gems[keyof typeof gems]) {
+        setSelectedGem(gem);
+    }
+
 
     return (
         <div className="flex gap-10 mt-4">
@@ -109,18 +127,28 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
                         <div key={`${i}-${j}`} onClick={() => place(cell, i, j)} className={twMerge(
                             "text flex items-center justify-center w-5 h-5 border border-black dark:border-white",
                             ["1", "2", "3", "4", "5", "6", "7"].includes(cell) && "bg-red-500 text-white",
-                            ["G"].includes(cell) && "bg-green-700 text-white"
+                            gems[cell as TGem]?.style,
                         )}>
                             {display}
                         </div>
                     )
                 }))}
             </div>
-            <div className="flex gap-10">
-                <button className="btn btn-primary h-min" onClick={() => undo()} disabled={!canUndo()}>Undo</button>
-                <button className="btn btn-primary h-min" onClick={() => reset()}>Reset</button>
-                <button className="btn btn-primary h-min" onClick={() => save(maze)}>Save</button>
-                <button className="btn btn-primary h-min" onClick={() => load()}>Load</button>
+
+            <div className="flex flex-col gap-10">
+                <div className="flex gap-10">
+                    <button className="btn btn-primary h-min" onClick={() => undo()} disabled={!canUndo()}>Undo</button>
+                    <button className="btn btn-primary h-min" onClick={() => reset()}>Reset</button>
+                    <button className="btn btn-primary h-min" onClick={() => save(maze)}>Save</button>
+                    <button className="btn btn-primary h-min" onClick={() => load()}>Load</button>
+                </div>
+                <div className="flex gap-10 pl-[2%]">
+                    {Object.entries(gems).map(([key, gem]) => (
+                        <div key={key} onClick={() => selectGem(gem)} className={twMerge("text flex items-center justify-center w-5 h-5 border border-black dark:border-white cursor-pointer transition-transform hover:scale-110", gem.style, selectedGem.name === gem.name ? "ring-4 ring-amber-300" : "")}>
+                            {gem.name}
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
