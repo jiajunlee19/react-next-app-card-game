@@ -14,13 +14,14 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
     // States
     const gridSize = 37;
     const [maze, setMaze] = useState(mazes[0]);
-    const [history, setHistory] = useState<string[][][]>([mazes[0]])
+    const [history, setHistory] = useState<string[][][]>([mazes[0]]);
 
+    
     // Effects
     useEffect(() => {
         if (typeof window !== "undefined") {
             const savedMaze = localStorage.getItem("savedMaze");
-            if (savedMaze) {
+            if (savedMaze && (JSON.parse(savedMaze)).length === gridSize && (JSON.parse(savedMaze)[0]).length === gridSize) {
                 setMaze(JSON.parse(savedMaze));
             }
         }
@@ -89,7 +90,7 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
                 return;
             }
             const savedMaze = localStorage.getItem("savedMaze");
-            const newMaze = savedMaze ? JSON.parse(savedMaze) : mazes[0];
+            const newMaze = (savedMaze && (JSON.parse(savedMaze)).length === gridSize && (JSON.parse(savedMaze)[0]).length === gridSize) ? JSON.parse(savedMaze) : mazes[0];
             setMaze(newMaze);
             setHistory([newMaze]);
         }
