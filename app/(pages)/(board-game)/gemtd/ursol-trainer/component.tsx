@@ -12,10 +12,19 @@ type TGemTDDUrsolTrainerComponent = {
 export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerComponent) {
 
     // States
-
     const gridSize = 37;
     const [maze, setMaze] = useState(mazes[0]);
     const [history, setHistory] = useState<string[][][]>([mazes[0]])
+
+    // Effects
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const savedMaze = localStorage.getItem("savedMaze");
+            if (savedMaze) {
+                setMaze(JSON.parse(savedMaze));
+            }
+        }
+    }, []);
 
 
     // Functions
@@ -56,8 +65,8 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
     }
 
     function reset() {
-        const confirmReset = window.confirm("Are you sure to reset into your last saved maze ?");
-        if (!confirmReset) {
+        const confirm = window.confirm("Are you sure to reset into a blank maze ?");
+        if (!confirm) {
             return;
         }
 
@@ -65,6 +74,26 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
         setHistory([mazes[0]]);
     }
 
+    function save(maze: string[][]) {
+        const confirm = window.confirm("Are you sure to override your last saved maze and save current maze ?");
+        if (!confirm) {
+            return;
+        }
+        localStorage.setItem("savedMaze", JSON.stringify(maze));
+    }
+
+    function load() {
+        if (typeof window !== "undefined") {
+            const confirm = window.confirm("Are you sure to load into your last saved maze ?");
+            if (!confirm) {
+                return;
+            }
+            const savedMaze = localStorage.getItem("savedMaze");
+            const newMaze = savedMaze ? JSON.parse(savedMaze) : mazes[0];
+            setMaze(newMaze);
+            setHistory([newMaze]);
+        }
+    }
 
 
     return (
@@ -89,6 +118,8 @@ export default function GemTDUrsolTrainerComponent({ }: TGemTDDUrsolTrainerCompo
             <div className="flex gap-10">
                 <button className="btn btn-primary h-min" onClick={() => undo()} disabled={!canUndo()}>Undo</button>
                 <button className="btn btn-primary h-min" onClick={() => reset()}>Reset</button>
+                <button className="btn btn-primary h-min" onClick={() => save(maze)}>Save</button>
+                <button className="btn btn-primary h-min" onClick={() => load()}>Load</button>
             </div>
         </div>
     );
