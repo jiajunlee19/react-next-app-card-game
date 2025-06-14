@@ -30,7 +30,7 @@ export default function GemTDntroPage() {
     ] as const;
 
     const skills = [
-        {skill: "URSOL", description: "Point-targeted reposition skill to rotate surrounding gems in anti-clockwise.", goldCosts: "4 -> 3 -> 2 -> 1"},
+        {skill: "URSOL", description: "Point-targeted reposition skill to rotate surrounding gems in anti-clockwise.", goldCosts: "200 -> 125 -> 75 -> 50"},
         {skill: "SWAP", description: "Gem-or-stone targeted reposition skill to swap two gems/stones by casting twice.", goldCosts: "300 -> 225 -> 175 -> 150"},
         {skill: "TIMELAPSE", description: "Channeled skill to remove current build phase gems and allow for rebuild.", goldCosts: "600 -> 500 -> 400 -> 300"},
         {skill: "Stay tuned for more skills", description: "Stay tuned for more skills", goldCosts: "0 -> 0 -> 0 -> 0"},
@@ -53,9 +53,10 @@ export default function GemTDntroPage() {
             
             <BaseTable columns={columns} data={skills} />
 
-            <h2 id="play">Play the Game</h2>
+            <h2 id="play">Utility for GemTD Game</h2>
             <p>To learn or train your URSOL skill, navigate to the <Link href="/gemtd/ursol-trainer">Ursol Trainer</Link>.</p>
             <p>Wanted to AFK in gemtd without physically present to accept games? Navigate to the <Link href="/gemtd/gemtd-auto">gemtd-auto</Link> solution.</p>
+            <p>Wanted to change gemtd heroes for other players? Navigate to the <Link href="/gemtd/hero-changer">hero-changer</Link> solution.</p>
             <br />
             <br />
         </>
