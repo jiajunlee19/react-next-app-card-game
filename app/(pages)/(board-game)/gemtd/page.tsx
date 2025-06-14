@@ -24,8 +24,8 @@ export default function GemTDntroPage() {
         "MERGE2 will replace the selected gem and upgrade it into two level higher. Can be used only when there are four identical gems in a single build phase.",
         "DOWNGRADE will replace the selected gem and downgrade it into any level lower, with the cost of 200 gold.",
         "COMBINE will replace the selected gem and upgrade it into a stronger tower. Can be used only when there are three gems matching a special combination.",
-        "SPECIAL skills will not completed the build phase, players can combine special skills to get a higher quality gems or to reposition or buff the gems.",
-        "Once build phase is completed, creeps will start attacking from point 0 to point 7, following the path of the maze.",
+        "SPECIAL skills will not complete the build phase, players can use special skills to pray for a higher quality gems or to reposition your gems or to buff your gems.",
+        "Once build phase is completed, creeps will start attacking from point 1 to point 7, following the path of the maze.",
         "If creeps reached the last castle point, the castle hp will be reduced. Game loses if castle hp = 0",
     ] as const;
 
