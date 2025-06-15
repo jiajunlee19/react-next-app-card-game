@@ -2,14 +2,14 @@ import { decodeDurationInSeconds } from "@/app/_libs/gemtd";
 import { gemTDPlayerInfoSchema, steamPlayerInfoSchema, TGemTDPlayerInfo, TSteamPlayerInfo } from "@/app/_libs/zod_server";
 import Image from "next/image";
 
-type TGemTDHeroChangerComponent = {
+type TGemTDPlayerProfileComponent = {
     steamPlayerInfo: TSteamPlayerInfo | {} ,
     gemTDPlayerInfo: TGemTDPlayerInfo | {},
     fullSkillsHeroes: {[key: string]: string} | {},
 };
 
  
-export default function GemTDHeroChangerComponent({ steamPlayerInfo, gemTDPlayerInfo, fullSkillsHeroes }: TGemTDHeroChangerComponent) {
+export default function GemTDPlayerProfileComponent({ steamPlayerInfo, gemTDPlayerInfo, fullSkillsHeroes }: TGemTDPlayerProfileComponent) {
 
     if (!steamPlayerInfo || !gemTDPlayerInfo) {
         return <p>Loading player data ...</p>
