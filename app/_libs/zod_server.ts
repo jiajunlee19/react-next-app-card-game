@@ -63,17 +63,20 @@ export type TSteamPlayerInfo = z.infer<typeof steamPlayerInfoSchema>;
 export const skillIDSchema = z.string().regex(/^a\d{3}$/, "Skill ID should start with a, followed by 3 digits !")
 export type TSkillID = z.infer<typeof skillIDSchema>;
 
-export const heroIDSchema = z.string().regex(/^a\d{3}$/, "Hero ID should start with h, followed by 3 digits !")
+export const heroIDSchema = z.string().regex(/^h\d{3}$/, "Hero ID should start with h, followed by 3 digits !")
 export type THeroID = z.infer<typeof heroIDSchema>;
 
-export const effectSchema = z.string().regex(/^a\d{3}$/, "Effect ID should start with e, followed by 3 digits !")
-export type TEffect = z.infer<typeof effectSchema>;
+export const effectIDSchema = z.string().regex(/^e\d{3}$/, "Effect ID should start with e, followed by 3 digits !").or(z.literal(""))
+export type TEffectID = z.infer<typeof effectIDSchema>;
+
+export const questIDSchema = z.string().regex(/^q\d{3}$/, "Quest ID should start with q, followed by 3 digits !")
+export type TQuestID = z.infer<typeof questIDSchema>;
 
 const abilitySchema = z.record(skillIDSchema, z.number().min(1).max(4));
 
 const heroSchema = z.object({
   ability: abilitySchema,
-  effect: z.string(),
+  effect: effectIDSchema,
   extend: z.number().optional(),
   hero_id: z.string().optional(),
 });
@@ -101,7 +104,7 @@ const rankInfoSchema = z.object({
 
 const questSchema = z.object({
     quest_expire: z.number(),
-    quest: z.string(),
+    quest: questIDSchema,
     quest_finish_count: z.number(),
     pass: z.number(),
     season: z.number(),
