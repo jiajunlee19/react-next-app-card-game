@@ -1,7 +1,7 @@
 import { getGemTDPlayerInfo, getSteamPlayerInfo } from '@/app/_actions/gemtd';
 import { getGemTDFullSkillsHeroes } from '@/app/_libs/gemtd';
 import type { Metadata } from 'next'
-import GemTDHeroChangerComponent from './component';
+import GemTDPlayerProfileComponent from './component';
 
 export const metadata: Metadata = {
     title: {
@@ -19,7 +19,7 @@ export default async function GemTDHeroChangerPage() {
 
     return (
         <>
-            <GemTDHeroChangerComponent steamPlayerInfo={steamPlayerInfo} gemTDPlayerInfo={gemTDPlayerInfo} fullSkillsHeroes={fullSkillHeroes} />
+            <GemTDPlayerProfileComponent steamPlayerInfo={steamPlayerInfo} gemTDPlayerInfo={gemTDPlayerInfo} fullSkillsHeroes={fullSkillHeroes} />
         </>
     )
 };

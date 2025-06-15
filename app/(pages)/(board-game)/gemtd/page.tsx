@@ -56,7 +56,7 @@ export default function GemTDntroPage() {
             <h2 id="play">Utility for GemTD Game</h2>
             <p>To learn or train your URSOL skill, navigate to the <Link href="/gemtd/ursol-trainer">Ursol Trainer</Link>.</p>
             <p>Wanted to AFK in gemtd without physically present to accept games? Navigate to the <Link href="/gemtd/gemtd-auto">gemtd-auto</Link> solution.</p>
-            <p>Wanted to change gemtd heroes for other players? Navigate to the <Link href="/gemtd/hero-changer">hero-changer</Link> solution.</p>
+            <p>Wanted to view gemtd player profile or change the gemtd heroes for other players? Navigate to the <Link href="/gemtd/player-profile">player-profile</Link> solution.</p>
             <br />
             <br />
         </>
