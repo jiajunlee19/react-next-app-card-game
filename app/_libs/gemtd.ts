@@ -183,3 +183,11 @@ export function getGemTDFullSkillsHeroes(gemTDPlayerInfo: TGemTDPlayerInfo | {})
 
     return fullSkillHeroes;
 }
+
+export function decodeDurationInSeconds(seconds: number) {
+    const days = Math.floor(seconds / (60*60*24));
+    const hours = Math.floor((seconds % (60*60*24)) / (60*60));
+    const minutes = Math.floor((seconds % (60*60) / (60)));
+
+    return `${days}days ${hours}h ${minutes}mins`
+}

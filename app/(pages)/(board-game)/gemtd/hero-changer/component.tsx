@@ -1,3 +1,4 @@
+import { decodeDurationInSeconds } from "@/app/_libs/gemtd";
 import { gemTDPlayerInfoSchema, steamPlayerInfoSchema, TGemTDPlayerInfo, TSteamPlayerInfo } from "@/app/_libs/zod_server";
 import Image from "next/image";
 
@@ -24,6 +25,10 @@ export default function GemTDHeroChangerComponent({ steamPlayerInfo, gemTDPlayer
     const rank = parsedGemTDPlayerInfo.data.rank_info;
     const quest = parsedGemTDPlayerInfo.data.quest;
 
+    const questExpire = decodeDurationInSeconds(quest.quest_expire);
+    const passExpire = decodeDurationInSeconds(quest.pass);
+    const seasonExpire = decodeDurationInSeconds(quest.season);
+    
     return (
         <div style={{ padding: "1rem", fontFamily: "sans-serif", lineHeight: "1.6" }}>
             <h2>🎮 Steam Profile</h2>
@@ -69,10 +74,10 @@ export default function GemTDHeroChangerComponent({ steamPlayerInfo, gemTDPlayer
         
             <h3>📜 Quest Info</h3>
                 <ul>
-                    <li className="text"><strong>Quest ID:</strong> {quest.quest}</li>
-                    <li className="text"><strong>Expires In:</strong> {quest.quest_expire}</li>
-                    <li className="text"><strong>Pass:</strong> {quest.pass}</li>
-                    <li className="text"><strong>Season:</strong> {quest.season}</li>
+                    <li className="text"><strong>Special Quest ID:</strong> {quest.quest}</li>
+                    <li className="text"><strong>Special Quest Expires In:</strong> {questExpire}</li>
+                    <li className="text"><strong>Win Quest Expires In:</strong> {passExpire}</li>
+                    <li className="text"><strong>Current Season Expires In:</strong> {seasonExpire}</li>
                 </ul>
         
             <h2>💎 Full-Skill Heroes</h2>
